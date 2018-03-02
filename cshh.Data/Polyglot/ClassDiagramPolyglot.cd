@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="cshh.Data.User.UserProfile">
+    <Position X="5.5" Y="1" Width="1.5" />
+    <AssociationLine Name="ForeignTexts" Type="cshh.Data.Polyglot.ForeignText" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="2.233" />
+        <Point X="5.75" Y="3.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="WordDefinitions" Type="cshh.Data.Polyglot.WordDefinition" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="1.375" />
+        <Point X="4.625" Y="1.375" />
+        <Point X="4.625" Y="7.504" />
+        <Point X="5" Y="7.504" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAACAAAAAAAAAAAAAAAAAAAAAAgIAAAA=</HashCode>
+      <FileName>User\UserProfile.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ForeignTexts" />
+      <Property Name="UserWords" />
+      <Property Name="WordDefinitions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.ForeignText">
+    <Position X="4.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAQAAAQAAAAAAAAACAAgAAA=</HashCode>
+      <FileName>Polyglot\ForeignText.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Language" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.Language">
+    <Position X="7.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAQAAAAAAIAAAAAAAAAgAAA=</HashCode>
+      <FileName>Polyglot\Language.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.Word">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAACCAAAAEAAAAAAAEAAAAAABAAAAAAACAAgAAA=</HashCode>
+      <FileName>Polyglot\Word.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Language" />
+      <Property Name="WordType" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Definitions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.WordDefinition">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAACAAAAAIAAAAAAAQAAAAAAAAAAAAgQAA=</HashCode>
+      <FileName>Polyglot\WordContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.WordType">
+    <Position X="12.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Polyglot\WordType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.WordSet">
+    <Position X="6.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Polyglot\WordSet.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="UserWords" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.WordStatus">
+    <Position X="11.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Polyglot\WordStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cshh.Data.Polyglot.UserWord">
+    <Position X="9" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEBAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Polyglot\UserWord.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Status" />
+      <Property Name="Word" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
