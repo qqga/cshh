@@ -1,0 +1,54 @@
+﻿@model DefinitionViewModel
+
+@{
+    var definition = Model;
+    var divId = $"wordDefiniiton-{@definition.Id}";
+}
+
+<div id="@divId">
+
+
+    <dl>
+        <dt>@Html.LabelFor(d => definition.WordType)</dt>
+        <dd> @Html.DisplayTextFor(d => definition.WordType)</dd>
+    </dl>
+
+    <dl>
+        <dt>@Html.LabelFor(d => definition.Definition)</dt>
+        <dd> @Html.DisplayTextFor(d => definition.Definition)</dd>
+    </dl>
+
+    <dl>
+        <dt>@Html.LabelFor(d => definition.Example)</dt>
+        <dd> @Html.DisplayTextFor(d => definition.Example)</dd>
+    </dl>
+
+    <dl>
+        <dt>@Html.LabelFor(d => definition.Public)</dt>
+        <dd> @Html.CheckBoxFor(d => definition.Public, new { disabled = "disabled" })</dd>
+    </dl>
+    
+    <div class="errorText"></div>
+
+
+    @if(true@*@definition.Editable*@) //todo
+{
+@Ajax.ActionLink("Удалить", "Delete", "Definition", new { id = definition.Id }, new AjaxOptions()
+{
+    AllowCache = false,
+    Confirm = "Удалить определение?",
+    HttpMethod = "Post",
+    OnSuccess = $"onSuccessDeleteDefinition('{definition.Id}')",
+    OnFailure = $"onFailureDeleteDefinition(xhr,status,error,'{definition.Id}')",
+})
+
+@Ajax.ActionLink("Изменить", "Edit", "Definition", new { id = definition.Id }, new AjaxOptions()
+{
+    AllowCache = false,
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = divId,
+})
+
+}
+    <hr />
+</div>

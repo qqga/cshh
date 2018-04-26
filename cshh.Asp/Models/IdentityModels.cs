@@ -21,7 +21,7 @@ namespace cshh.Asp.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("cshhConnection", throwIfV1Schema: false)
         {
         }
 

@@ -1,0 +1,102 @@
+﻿@model ParsedWordsViewModel
+
+<div @*style="margin-left:20px"*@>
+    <table id="jqGrid-parsedWords"></table>
+    <div id="jqGridPager-parsedWords"></div>
+    @using(Html.BeginForm("SaveParsedWords", "ForeignText", FormMethod.Post, new { id = "parsed-words-form" }))
+    {
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+
+        <div>
+            <div>@Html.LabelFor(m => m.Language_Id, "Язык")</div>
+            <div>@Html.DropDownListFor(m => m.Language_Id, Model.Languages)</div>
+        </div>
+
+        <div>
+            <div>@Html.LabelFor(m => m.Status_Id, "Язык")</div>
+            <div>@Html.DropDownListFor(m => m.Status_Id, Model.Statuses)</div>
+        </div>
+
+        <div>
+            <div>@Html.LabelFor(m => m.SetName, "Набор")</div>
+            <div>@Html.TextBoxFor(m => m.SetName, Model.Sets)</div>
+        </div>
+        <input type="hidden" name="WordsJson" />
+        <input type="submit" value="Сохранить слова" />
+    }
+</div>
+<hr />
+<script>
+
+    $("#parsed-words-form").submit(function (eventObj) {
+        $("input[name='WordsJson']").val(JSON.stringify(mydata));
+        return true;
+    });
+
+
+    @if(!string.IsNullOrEmpty(Model.WordsJson))
+    {<text>
+
+    var mydata = JSON.parse('@Html.Raw(Model.WordsJson)');
+
+    function gridIntin() {
+        $("#jqGrid-parsedWords").jqGrid({
+            data: mydata,
+            datatype: "local",
+            //styleUI: "Bootstrap",
+            colModel: [
+                { name: "id", key: true, editable: false, hidden: true },
+                { label: 'Слово', name: 'Word', width: 75, editable: true },
+                { label: 'Кол-во', name: 'Count', width: 80, sorttype: 'number', editable: false }
+            ],
+            viewrecords: true, // show the current page, data rang and total records on the toolbar
+            width: 780,
+            height: 500,
+            rowNum: 5000,
+            rowList: [25, 50, 75, 100, 500, 1000, 5000],
+            loadonce: true, // this is just for the demo
+            pager: "#jqGridPager-parsedWords",
+            //editurl: 'clientArray',
+            editurl: 'clientArray', cellsubmit: 'clientArray',//, cellEdit: true
+            //,cellEdit: true
+            multiselect: true,
+        });
+
+        $('#jqGrid-parsedWords').navGrid("#jqGridPager-parsedWords",
+            { edit: false, add: false, del: true, refresh: false, view: false },
+            // options for the Edit Dialog
+            {
+            },
+            // options for the Add Dialog
+            {
+            },
+            // options for the Delete Dailog
+            {
+            },
+            {
+                multipleSearch: true,
+            });
+        $('#jqGrid-parsedWords').inlineNav('#jqGridPager-parsedWords',
+            // the buttons to appear on the toolbar of the grid
+            {
+                edit: true,
+                add: false,
+                del: false,
+                cancel: true,
+                editParams: {
+                    keys: true,
+                },
+                addParams: {
+                    keys: true
+                }
+            });
+
+    }
+
+    gridIntin();
+    //$(document).ready();
+
+    </text>
+        }
+</script>
+

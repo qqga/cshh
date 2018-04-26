@@ -12,13 +12,14 @@ namespace cshh.Data.Services.Mapping
     {
         public UserProfileMap()
         {
-            ToTable("UserProfile", "Polyglot");
+            ToTable("UserProfile", "dbo");
 
-            Property(u => u.ApplicationUserId).IsRequired();
+            Property(u => u.ApplicationUserId).IsRequired().HasMaxLength(128);            
+            //HasIndex(up => up.ApplicationUserId).IsUnique();  error: constructor not found
 
-            HasMany(u => u.UserWords).WithRequired(uw => uw.User);
-            HasMany(u => u.ForeignTexts).WithRequired(t => t.UserProfile);
-     
+            HasMany(u => u.UserWordsSets).WithRequired(uw => uw.User);
+            HasMany(u => u.ForeignTexts).WithOptional(t => t.UserProfile).HasForeignKey(t=>t.UserProfile_Id).WillCascadeOnDelete(false);
+            HasMany(u => u.Words).WithRequired(w => w.UserProfile).HasForeignKey(w => w.UserProfile_Id).WillCascadeOnDelete(false);
         }
     }
 }

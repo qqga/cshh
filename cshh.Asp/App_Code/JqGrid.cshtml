@@ -1,0 +1,24 @@
+﻿@using System.Web.Optimization
+
+@helper  JqGridBundles()
+    {
+        <style>
+            /* correct bootstrap*/
+            .ui-jqdialog, .ui-jqdialog *, .ui-jqdialog *::before, .ui-jqdialog *::after {
+                box-sizing: content-box;
+                line-height:1;
+            }
+
+            /* correct jqui*/
+            .ui-dialog .ui-resizable-se {
+                width: 12px;
+                height: 12px;
+            }
+
+
+        </style>
+        @Styles.Render("~/Content/ui.jqgrid.css")
+
+        @Scripts.Render("~/bundles/JqGrid")
+}
+

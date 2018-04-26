@@ -11,9 +11,10 @@ namespace cshh.Data.Services.Mapping.Polyglot
     {
         public WordTypeMap() : base()
         {
+            ToTable("WordType", "Polyglot");
             Property(t => t.Name).IsRequired().HasMaxLength(100);
 
-            HasMany(t => t.Words).WithOptional(w => w.WordType);
+            HasMany(t => t.Words).WithOptional(w => w.Type).HasForeignKey(w=>w.Type_Id);
         }
     }
 }

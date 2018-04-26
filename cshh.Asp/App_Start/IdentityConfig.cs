@@ -11,15 +11,54 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using cshh.Asp.Models;
+using System.Web.Configuration;
 
 namespace cshh.Asp
 {
+    //public class EmailService : IIdentityMessageService
+    //{
+    //    public Task SendAsync(IdentityMessage message)
+    //    {
+    //        // Plug in your email service here to send an email.
+    //        return Task.FromResult(0);
+    //    }
+    //}
+
+
     public class EmailService : IIdentityMessageService
     {
+        string _host;
+        int _port;
+        string _mailFrom;
+        Func<string> _getPassword;
+
+        public EmailService(string host, int port, string mailFrom, Func<string> passwordGetter)
+        {
+            //System.Configuration.AppSettingsSection
+
+            _host = host;
+            _port = port;
+            _mailFrom = mailFrom;
+            _getPassword = passwordGetter;
+        }
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            return Send(message.Body, message.Subject, message.Destination);
+        }
+
+        public Task Send(string body, string subject, string recipients)
+        {
+            System.Net.Mail.SmtpClient smtpClient = new System.Net.Mail.SmtpClient(_host, _port);
+            smtpClient.EnableSsl = true;
+            smtpClient.Credentials = new System.Net.NetworkCredential(_mailFrom, _getPassword());
+            var message = new System.Net.Mail.MailMessage(_mailFrom, recipients)
+            {
+                IsBodyHtml = true,
+                Body = body,
+                Subject = subject
+            };
+            return smtpClient.SendMailAsync(message);
         }
     }
 
@@ -54,10 +93,10 @@ namespace cshh.Asp
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                //RequireNonLetterOrDigit = true,
                 RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                //RequireLowercase = true,
+                //RequireUppercase = true,
             };
 
             // Configure user lockout defaults
@@ -76,7 +115,23 @@ namespace cshh.Asp
                 Subject = "Код безопасности",
                 BodyFormat = "Ваш код безопасности: {0}"
             });
-            manager.EmailService = new EmailService();
+
+            var section = WebConfigurationManager.GetSection("appSettingsEncrypted") as System.Collections.Specialized.NameValueCollection;
+
+
+            // todo check encode section if in real environment
+            //#if !DEBUG
+            //            // todo убрать кудато, надо чтоб запускалось на той машине где будет жить, или через утилиту Aspnet_regiis.exe после публикации
+            //            //Configuration config = WebConfigurationManager.OpenWebConfiguration("/");
+            //            //ConfigurationSection appSettings = config.GetSection("appSettingsEncrypted");
+            //            //{
+            //            //    appSettings.SectionInformation.ProtectSection("DataProtectionConfigurationProvider");
+            //            //    config.Save();
+            //            //}
+            //#endif
+
+            manager.EmailService = new EmailService(section["MailHost"], Convert.ToInt32(section["MailPort"]), section["Mail"], () => section["MailP"]);
+
             manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)

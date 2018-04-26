@@ -1,0 +1,43 @@
+﻿@model UserWordsListViewModel
+<style>
+    table {
+        border: 1px solid black;
+        border-collapse: collapse;
+        border-spacing: 0px;
+    }
+
+    td, th{
+        border: 1px solid black;
+        padding: 0px 4px;
+    }
+</style>
+
+@{ var addlink = Ajax.ActionLink("Добавить", "Add", new AjaxOptions()
+    {
+        InsertionMode = InsertionMode.Replace,
+        AllowCache = false,
+        UpdateTargetId = "newWordDiv",
+    });
+}
+<div id="newWordDiv"></div>
+<table>
+    <thead id="wordsTableHead">
+        <tr><th>Слово</th><th>Язык</th><th>Набор</th><th>Статус</th><th>@addlink</th></tr>
+    </thead>
+    @foreach(var word in Model.UserWords)
+    {
+        @Html.Partial("_ListItem", word)
+    }
+
+</table>
+
+<script>
+
+    function onSuccessDeleteWord(id) {
+        $("#word-" + id).remove();
+    }
+    function onFailureDeleteWord(xhr, status, error, id) {
+        let errDivId = "#word-" + id + " .errorText"
+        $(errDivId).text(error);
+    };
+</script>

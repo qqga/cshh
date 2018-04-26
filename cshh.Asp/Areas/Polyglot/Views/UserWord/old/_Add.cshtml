@@ -1,0 +1,81 @@
+﻿@model cshh.Asp.Models.Polyglot.WordEditViewModel
+
+
+@using(Ajax.BeginForm(new AjaxOptions()
+{
+    OnSuccess = "clearDiv",
+    OnFailure = "$('#newWordDiv .errorText').html(error)",
+    AllowCache = false,
+    InsertionMode = InsertionMode.InsertAfter,
+    UpdateTargetId = "wordsTableHead"
+}))
+{
+    <dl class="dl-horizontal">
+        <dt>@Html.LabelFor(m => m.Text)</dt>
+        <dd>
+            @Html.TextBoxFor(m => m.Text)
+            @Html.ValidationMessageFor(m => m.Text)
+        </dd>
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt>@Html.LabelFor(m => m.Language)</dt>
+        <dd>
+            @Html.DropDownListFor(m => m.Language.Id, Model.Languages?.ToSeletListItems(l => l.Name, l => l.Id, Model.Language?.Id))
+            @Html.ValidationMessageFor(m => m.Text)
+        </dd>
+
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt> @Html.LabelFor(m => m.WordType)</dt>
+        <dd>
+            @Html.DropDownListFor(m => m.WordType.Id, Model.WordTypes?.ToSeletListItems(ws => ws.Name, ws => ws.Id, Model.WordType?.Id))
+            @Html.ValidationMessageFor(m => m.WordType)
+        </dd>
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt> @Html.LabelFor(m => m.Status)</dt>
+        <dd>
+            @Html.DropDownListFor(m => m.Status.Id, Model.Statuses?.ToSeletListItems(s => s.Name, s => s.Id, Model.Status?.Id))
+            @Html.ValidationMessageFor(m => m.Status)
+        </dd>
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt> @Html.LabelFor(m => m.WordSet)</dt>
+        <dd>
+            @Html.DropDownListFor(m => m.WordSet.Id, Model.WordSets?.ToSeletListItems(ws => ws.Name, ws => ws.Id, Model.WordSet?.Id))
+            @Html.ValidationMessageFor(m => m.WordSet)
+        </dd>
+    </dl>
+    <div class="errorText text-danger"></div>
+    <input type="submit" value="Сохранить" class="btn btn-default" />
+    <button class="btn btn-default" onclick="clearDiv()">Отмена</button>
+}
+
+<script>
+    let textInput = $("input[name='Text']");
+    $("input[name='Text']").autocomplete({
+        source: "@Url.Action("WordsLike")",
+        minLength: 2,
+        select: function (event, ui) {
+            wordTextChanged(ui.item.value, ui.item.id);
+        }
+    });
+
+    textInput.change(function (el) {
+        wordTextChanged(el.target.value);
+    });
+
+    function wordTextChanged(text) {
+
+
+        //console.log(text,id);
+    }
+
+    function clearDiv() {
+        $('#newWordDiv').html('');
+    }
+</script>

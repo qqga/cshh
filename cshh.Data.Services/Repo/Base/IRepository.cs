@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace cshh.Data.Services.Repo
 {
 
-    public delegate IQueryable<T> IncludeFunc<T>(IQueryable<T> inQuery);
+    //public delegate IQueryable<T> IncludeFunc<T>(IQueryable<T> inQuery);
 
     public interface IRepository : IDisposable //where T : IBaseEntity
     {
@@ -27,6 +27,11 @@ namespace cshh.Data.Services.Repo
 
     public static class IRepositoryExtenxions
     {
+        public static void SetProxyCreationEnabled(this IRepository rep, bool val)
+        {            
+            ((EfRepository)rep).Context.Configuration.ProxyCreationEnabled = val;//todo
+        }
+
         public static void Delete<T>(this IRepository rep, object id, bool save = false) where T : class
         {
             var entry = rep.GetByKey<T>(id);
@@ -47,9 +52,50 @@ namespace cshh.Data.Services.Repo
 
         }
 
-        public static T GetByKey<T>(this IRepository rep, object key, Func<T, object> keySelector, IncludeFunc<T> includeFunk) where T : class //: BaseEntity
+        public static T GetByKey<T>(this IRepository rep, int key,params string[] include) where T : BaseEntity
         {
-            return includeFunk(rep.GetAll<T>()).Where(o => keySelector(o) == key).FirstOrDefault();
+            IQueryable<T> all = rep.GetAll<T>();
+
+            foreach(string inc in include)
+            {
+                all = all.Include(inc);
+            }
+
+            return all.Where(o => o.Id == key).FirstOrDefault();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rep"></param>
+        /// <param name="key"></param>
+        /// <param name="includePath">include</param>
+        /// <returns></returns>
+        public static T GetByKey<T>(this IRepository rep, int key,params Expression<Func<T, object>>[] includePath) where T : BaseEntity //todo check object Expression or back to includefunc
+        {
+            IQueryable<T> all = rep.GetAll<T>();
+
+            foreach(Expression<Func<T, object>> include in includePath)
+            {
+                all = all.IncludeQ(include);
+            }
+            return all.Where(o => o.Id == key).FirstOrDefault();
+        }
+
+        //public static T GetByKey<T>(this IRepository rep, int key, IncludeFunc<T> includeFunk) where T : BaseEntity
+        //{
+        //    return includeFunk(rep.GetAll<T>()).Where(o => o.Id == key).FirstOrDefault();
+        //}
+
+        //public static T GetByKey<T>(this IRepository rep, object key, Func<T, object> keySelector, IncludeFunc<T> includeFunk) where T : class //: BaseEntity
+        //{
+        //    return includeFunk(rep.GetAll<T>()).Where(o => keySelector(o) == key).FirstOrDefault();
+        //}
+
+
+        public static IQueryable<T> IncludeQ<T>(this IQueryable<T> source, string path)=> QueryableExtensions.Include(source,path);        
+        public static IQueryable IncludeQ(this IQueryable source, string path)=> QueryableExtensions.Include(source,path);        
+        public static IQueryable<T> IncludeQ<T, TProperty>(this IQueryable<T> source, Expression<Func<T, TProperty>> path)=> QueryableExtensions.Include(source,path);
     }
 }

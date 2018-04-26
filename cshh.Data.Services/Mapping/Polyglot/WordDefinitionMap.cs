@@ -11,12 +11,14 @@ namespace cshh.Data.Services.Mapping.Polyglot
     {
         public WordDefinitionMap() : base()
         {
+            ToTable("WordDefinition", "Polyglot");
+
             Property(w => w.Example).HasMaxLength(2000);
             Property(w => w.Definition).HasMaxLength(2000);
 
-            HasRequired(w => w.Word).WithMany(w => w.Definitions);
-            HasOptional(c => c.WordType).WithMany(wt => wt.Definitions);
-            HasOptional(d => d.UserProfile).WithMany(u => u.WordDefinitions);
+            HasRequired(d => d.Word).WithMany(w => w.Definitions).HasForeignKey(d => d.Word_Id);
+            HasOptional(d => d.Type).WithMany(wt => wt.Definitions).HasForeignKey(d => d.Type_Id);
+            HasOptional(d => d.UserProfile).WithMany(u => u.WordDefinitions).HasForeignKey(d => d.UserProfile_Id);
         }
     }
 }

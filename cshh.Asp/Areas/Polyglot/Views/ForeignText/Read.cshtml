@@ -1,0 +1,9 @@
+﻿@model ForeignTextReadViewModel
+@{
+    ForeignTextReadViewModel text = Model;
+}
+
+<div>
+    @*@Html.Raw(text.GetTextWithBookmarks(HttpUtility.HtmlEncode, (title, note) => _Helpers.Bookmark(title, note).ToHtmlString()))*@
+    @Html.DisplayFor(m=>m)
+</div>

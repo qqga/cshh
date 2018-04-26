@@ -1,45 +1,95 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    @{
+        var themeCookieName = "ThemeJq";
+        var themes = new[] { "base", "Black-Tie", "Blitzer", "Cupertino", "Dark-Hive", "Dot-Luv", "Eggplant", "Excite-Bike", "Flick", "Hot-Sneaks", "Humanity", "Le-Frog", "Mint-Choc", "Overcast", "Pepper-Grinder", "Redmond", "Smoothness", "South-Street", "Start", "Sunny", "Swanky-Purse", "Trontastic", "UI-Darkness", "UI-Lightness", "Vader" };
+        var themeName = Request.Cookies[themeCookieName]?.Value ?? themes.First();
+    }
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title – приложение ASP.NET</title>
+
     @Styles.Render("~/Content/css")
+    @*<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">*@
+    @*@Styles.Render($"~/bundles/jquery-ui-{themeName}")*@
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+    @*<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/@(themeName)/jquery-ui.css" rel="stylesheet" /> вертел я этот cdn - прихожу утром а он не работает... ркн блочит все без разбора*@
+    <link href="~/Content/themes/@(themeName)/jquery-ui.css" rel="stylesheet" />
+
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css">*@
+
+    @RenderSection("styles", required: false)
+
+    @Scripts.Render("~/bundles/common")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery-unobtrusive-ajax")
+    @Scripts.Render("~/bundles/jquery-ui")
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Имя приложения", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        @Html.ActionLink("CSHH", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active"> @Html.ActionLink("О программе", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item active">@Html.ActionLink("Контакт", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        PolyG
+                    </a>
+                    <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+                        @Html.ActionLink("Слова", "Index", "UserWord", new { area = "polyglot" }, new { @class = "dropdown-item nav-link bg-dark" })
+                        @Html.ActionLink("Тексты", "Index", "ForeignText", new { area = "polyglot" }, new { @class = "dropdown-item nav-link bg-dark" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Разбор", "ParseWords", "ForeignText", new { area = "polyglot" }, new { @class = "dropdown-item nav-link bg-dark" })
+                    </div>
+                </li>
+                @*<li class="nav-item">
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>*@
+            </ul>
+            @*<form class="form-inline my-2 my-lg-0" >
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>*@
+
+            @*<select name="themeJq" onchange="f(this)"><option>base</option><option>swanky</option></select>*@
+
+            @Html.DropDownList("themeJq", themes.ToSeletListItems(s => s, s => s, themeName), new { onchange = "themeSelectorChanged(this)" })
+
+            @Html.Partial("_LoginPartial")
         </div>
-    </div>
+    </nav>
+
+
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year – CSHH</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
+
     @Scripts.Render("~/bundles/bootstrap")
+
+    <script>
+        function themeSelectorChanged(src) {
+            let expireDate = new Date();
+            expireDate.setFullYear(expireDate.getFullYear() + 3);
+            document.cookie = "@themeCookieName=" + src.value + "; expires=" + expireDate+"; path=/";
+            document.location = document.location;
+        }
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

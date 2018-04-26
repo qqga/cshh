@@ -15,13 +15,14 @@ namespace cshh.Data.Services.Mapping.Polyglot
             ToTable("ForeignText", "Polyglot");
 
             Property(t => t.Name).IsRequired().HasMaxLength(200).IsUnicode();
-            Property(t => t.Text).IsRequired().IsMaxLength().IsUnicode();
+            Property(t => t.Text).IsRequired().IsMaxLength().IsUnicode();            
 
-            HasRequired(t => t.UserProfile).WithMany(u => u.ForeignTexts);
-            HasRequired(t => t.Language).WithMany(l => l.Texts);
+            HasOptional(t => t.UserProfile).WithMany(u => u.ForeignTexts).HasForeignKey(t=>t.UserProfile_Id);
+            HasRequired(t => t.Language).WithMany(l => l.Texts).HasForeignKey(t=>t.Language_Id).WillCascadeOnDelete(false);
             
-            HasMany(t => t.Words).WithMany(w => w.Texts);
+            HasMany(t => t.Words).WithMany(w => w.Texts).Map(c => c.ToTable("ForeignTextWord", "Polyglot"));
 
+            HasMany(t => t.Bookmarks).WithRequired(b => b.ForeignText).HasForeignKey(b => b.ForeignText_Id);
         }
     }
 }

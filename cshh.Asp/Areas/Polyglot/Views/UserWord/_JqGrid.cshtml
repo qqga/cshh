@@ -1,0 +1,369 @@
+﻿@model cshh.Asp.Areas.Polyglot.Controllers.UserWordController.JqGrid_WordEditLists
+@{
+    var jgEditLists = Model;
+}
+<div style="margin-left:20px">
+    <div id="loadErrors" class="text-danger"></div>
+    <table id="jqGridUserWords"></table>
+    <div id="jqGridUserWordsPager"></div>
+</div>
+<script>
+        $.jgrid.defaults.responsive = true;
+  $(document).ready(function () {
+
+      //var mapNames = {
+      //    "Text": "Word.Text",
+      //    "Set": "Set.Id",
+      //    "Status": "Word.Status.Id",
+      //    "Language": "Word.Language.Id",
+      //    "Type": "Word.WordType.Id"
+      //}
+      var jqgWidth = 780;
+      var template = "<div style='margin-left:15px;'><div> Id <sup>*</sup>:</div><div> {Id} </div>"+
+          "<div> Text: </div><div>{WordText} </div>" +
+          "<div> Set: </div><div>{SetName} </div>" +
+          "<div> Status: </div><div>{Status_Id} </div>" +
+          "<div>{Word_Id}</div>" +
+          "<div> Language: </div><div>{WordLanguage_Id} </div>" +
+          "<div> Type: </div><div>{WordType_Id} </div>"+
+                     "<hr />"+
+                     "<div id = 'additionFormContainer'></div>"+
+          "<div> {sData} {cData}  </div></div>";
+
+      function setInputElem(value, options) {
+
+          var el = $("@Html.Raw(Html.TextBox("SetName", values:Model.WordSets).ToString().Replace(Environment.NewLine,""))");
+          el.val(value);
+          //var el = $("<input type = 'text' value = '" + value+"'>");
+          //var el = document.createElement("input");
+          //el.type = "text";
+          //el.value = value;
+          return el;
+      }
+      function corectId(el)
+      {
+          $(el).find("datalist").attr("id","SetName-datalist");
+      }
+      function setInputValue(elem, operation, value) {
+          if (operation === 'get') {
+              return $("#SetName").val();
+          } else if (operation === 'set') {
+              $("#SetName").val(value);
+          }
+      }
+
+
+      $("#jqGridUserWords").jqGrid({
+                url: "@Url.Action("JqGridJsonList", "UserWord",new {area = "polyglot" })",
+                mtype: "GET",
+				//styleUI : "Bootstrap",
+                datatype: "json",
+                colModel: [
+                    { label: "Id", name: "Id", hidden: true, editable: true, key: true, searchtype: 'integer', width:50, editoptions: { disabled: "disabled" } },
+                    { label: "Word_Id", name: "Word_Id", hidden: true, editable: true, editoptions: { type: "hidden" } },
+
+                    { label: "Слово", name: "WordText", index: "Word.Text", editable: true, editoptions: { disabled: "disabled", class: "addOnlyEnabled" } },
+                    //{ label: "Text", name: "Word.Text", index: "qwerasdf"},
+
+                    { label: "Набор", name: "SetName", index: "Set.Name", width: 100, /*stype: "select",*/ editable: true, edittype: "custom", editoptions: { custom_element: setInputElem, custom_value: setInputValue, dataInit: corectId } },
+                    @*{ label: "Набор", name: "Set_Id", hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.WordSetsStr" }},*@
+
+                    { label: "Статус", name: "StatusName", index: "Status.Name", width: 100},
+                    { label: "Статус", name:"Status_Id", hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.StatusesStr" } },
+
+                    { label: "Язык", name: "WordLanguage_Id", hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.LanguagesStr", disabled: "disabled", class: "addOnlyEnabled" } },
+                    { label: "Язык", name: "WordLanguageShortName", index: "Word.Language.ShortName", width: 50},
+
+                    { label: "Тип", name: "WordType_Id", hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.WordTypesStr", disabled: "disabled", class: "addOnlyEnabled" } },
+                    { label: "Тип", name: "WordTypeName", index: "Word.WordType.Name", width: 70},
+
+                    { label: "Создан", name: "DateTimeCreate" },
+                    { label: "tr", name: "Translations" },
+                ],
+                rowList: [25, 50, 75],
+				viewrecords: true,
+                height: 450,
+                rowNum: 20,
+                width: jqgWidth,
+                pager: "#jqGridUserWordsPager",
+                multiselect:true,
+
+                @*editurl: "@Url.Action("JqEdit", "word", new { area = "polyglot" })",
+                edit: { closeAfterEdit: true },*@
+
+                //addurl: "@Url.Action("Add", "word", new { area = "polyglot" })",
+
+                subGrid: true,
+                subGridRowExpanded: showChildGrid,
+
+
+        });
+            //$('#jqGrid').jqGrid('filterToolbar');
+
+      $('#jqGridUserWords').navGrid('#jqGridUserWordsPager',
+            // the buttons to appear on the toolbar of the grid
+            { edit: true, add: true, del: true, search: true, refresh: true, view: true, position: "left", cloneToTop: false },
+            // options for the Edit Dialog
+            {
+                editCaption: "Редакирование",
+                template: template,
+                errorTextFormat: function (data) {
+                    return 'Ошибка ребактирования: ' + data.responseText
+                },
+                //afterSubmit: afterSubmitEdit,
+                closeAfterEdit: true,
+                url: "@Url.Action("JqGridEdit", "UserWord", new { area = "polyglot" })"
+            },
+            // options for the Add Dialog
+            {
+                template: template,
+                errorTextFormat: function (data) {
+                    return 'Ошибка добавления: ' + data.responseText
+                },
+                closeAfterAdd: true,
+                url: "@Url.Action("JqGridAdd", "UserWord", new { area = "polyglot" })",
+            },
+            // options for the Delete Dailog
+            {
+                errorTextFormat: function (data) {
+                    return 'Ошибка удления: ' + data.responseText
+                },
+                url: "@Url.Action("JqGridDelete", "UserWord", new { area = "polyglot" })",
+            },
+            {
+                multipleSearch: true,
+            }
+        );
+
+      $('#jqGridUserWords').on("jqGridLoadError", function (event, xhr, status, error) {
+            $("#loadErrors").text(error);
+        });
+
+      $('#jqGridUserWords').on("jqGridLoadComplete", function (event, data) {
+            $("#loadErrors").text("");
+        });
+
+//----------Autocomplete------------------
+      $('#jqGridUserWords').on("jqGridAddEditBeforeShowForm", function (event, form, oper) {
+
+            var inputText$ = form.find("input[name='Text']");
+            var inputsAddonly$ = form.find(".addOnlyEnabled");
+
+            if (oper == "add") {
+
+                //inputText$.prop("disabled", false);
+                inputsAddonly$.prop("disabled", false);
+
+                inputText$.autocomplete({
+                    source: "@Url.Action("WordsLike", "Word")",
+                    minLength: 2
+                });
+
+            }
+            else {
+                inputsAddonly$.prop("disabled", true);
+                //inputText$.prop("disabled", true);
+            }
+
+        });
+
+//----------ChildGrid------------------
+        function showChildGrid(parentRowID, parentRowKey) {
+
+            let wordId = $("#jqGridUserWords").jqGrid("getCell", parentRowKey,"Word_Id");
+
+            $('#' + parentRowID).append("<ul><li><a href='#tab-translations'>Перевод</a></li><li><a href='#tab-defenitions'>Примеры</a></li></ul>");
+
+            showChildGridTrnslations(parentRowID, parentRowKey, wordId);
+            showChildGridDefinitions(parentRowID, parentRowKey, wordId);
+
+
+            $('#' + parentRowID).tabs();
+        }
+
+        function showChildGridTrnslations(parentRowID, parentRowKey) {
+
+            var templateTranslate = "<div style='margin-left:15px;'><div> Id <sup>*</sup>:</div><div> {Id} </div>" +
+                "<div> Text: </div><div>{Text} </div>" +
+                "<div> Language: </div><div>{Language_Id} </div>" +
+                "<div> Type: </div><div>{Type_Id} </div>" +
+                "<hr style='width:100%;'/>" +
+                "<div id = 'additionFormContainer'></div>" +
+                "<div> {sData} {cData}  </div></div>";
+
+
+            var childGridID = parentRowID + "_tableTranslations";
+            var childGridPagerID = parentRowID + "_pagerTranslations";
+
+            // send the parent row primary key to the server so that we know which grid to show
+            var childGridURL = "@Url.Action("JqGridTranslations", "Word",new {area = "polyglot"})" + "?userWord_Id="+parentRowKey; //parentRowKey + ".json";
+            //childGridURL = childGridURL + "&parentRowID=" + encodeURIComponent(parentRowKey)
+
+            // add a table and pager HTML elements to the parent grid row - we will render the child grid here
+            $('#' + parentRowID).append('<div id= "tab-translations"><div id = "loadErrorsTranslations" class="text-danger"></div><table id=' + childGridID + '></table><div id=' + childGridPagerID + ' class=scroll></div></div>');
+
+            $("#" + childGridID).jqGrid({
+                url: childGridURL,
+                mtype: "GET",
+                //styleUI: "Bootstrap",
+                datatype: "json",
+                page: 1,
+                colModel: [
+                    { label: 'Id', name: 'Id', hidden: true, editable: true, key: true, searchtype: 'integer', width:50, editoptions: { disabled: "disabled" }  },
+                    { label: 'Text', name: 'Text', width: 100, editable: true },
+                    { label: 'Язык', name: 'LanguageName', index:"Language.Name", width: 100 },
+                    { label: 'Язык', name: 'Language_Id', index:'Language.Name', hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.LanguagesStr" }},
+                    { label: 'Тип', name: 'TypeName', index:"WordType.Name", width: 100 },
+                    { label: 'Тип', name: 'Type_Id', index:'Type.Name', hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.WordTypesStr" }}
+                ],
+                //loadonce: true,
+                width: jqgWidth-100,
+                height: '100%',
+                pager: "#" + childGridPagerID
+            });
+
+
+            $('#' + childGridID).navGrid('#' + childGridPagerID,
+            // the buttons to appear on the toolbar of the grid
+            { edit: true, add: true, del: true, search: true, refresh: true, view: true, position: "left", cloneToTop: false },
+            // options for the Edit Dialog
+            {
+                editCaption: "Редакирование",
+                template: templateTranslate,
+                errorTextFormat: function (data) {
+                    return 'Ошибка ребактирования: ' + data.responseText
+                },
+                //afterSubmit: afterSubmitEdit,
+                closeAfterEdit: true,
+                url: "@Url.Action("JqGridEdit", "Word", new { area = "polyglot" })" //+ "?id=" + parentRowKey
+            },
+            // options for the Add Dialog
+            {
+                template: templateTranslate,
+                errorTextFormat: function (data) {
+                    return 'Ошибка добавления: ' + data.responseText
+                },
+                closeAfterAdd: true,
+                url: "@Url.Action("JqGridAddTranslate", "Word", new { area = "polyglot" })" + "?userWord_Id=" + parentRowKey
+            },
+            // options for the Delete Dailog
+            {
+                errorTextFormat: function (data) {
+                    return 'Ошибка удления: ' + data.responseText
+                },
+                url: "@Url.Action("JqGridDeleteTranslate", "Word", new { area = "polyglot" })" + "?userWord_Id=" + parentRowKey
+            },
+            {
+                multipleSearch: true,
+            });
+
+            $("#" + childGridID).on("jqGridAddEditBeforeShowForm", function (event, form, oper) {
+
+                var inputText$ = form.find("input[name='Text']");
+                inputText$.autocomplete({
+                        source: "@Url.Action("WordsLike", "Word")",
+                        minLength: 2
+                });
+            });
+
+            $("#" + childGridID).on("jqGridLoadError", function (event, xhr, status, error) {
+                $("#loadErrorsTranslations").text(error);
+            });
+
+            $("#" + childGridID).on("jqGridLoadComplete", function (event, data) {
+                $("#loadErrorsTranslations").text("");
+            });
+        }
+
+        function showChildGridDefinitions(parentRowID, parentRowKey, word_Id) {
+
+
+            var templateTDefinition = "<div style='margin-left:15px;'><div> Id <sup>*</sup>:</div><div> {Id} </div>" +
+                "<div> Определение: </div><div>{Definition} </div>" +
+                "<div> Пример: </div><div>{Example} </div>" +
+                "<div> Type: </div><div>{Type_Id} </div>" +
+                "<div> Public: </div><div>{Public} </div>" +
+                "<hr style='width:100%;'/>" +
+                "<div id = 'additionFormContainer'></div>" +
+                "<div> {sData} {cData}  </div></div>";
+
+            var childGridID = parentRowID + "_tableDefinitions";
+            var childGridPagerID = parentRowID + "_pagerDefinitions";
+
+            // send the parent row primary key to the server so that we know which grid to show
+            var childGridURL = "@Url.Action("JqGridList", "WordDefinition", new {area = "polyglot"})" + "?word_Id=" + word_Id; //parentRowKey + ".json";
+            //childGridURL = childGridURL + "&parentRowID=" + encodeURIComponent(parentRowKey)
+
+            // add a table and pager HTML elements to the parent grid row - we will render the child grid here
+            $('#' + parentRowID).append('<div id="tab-defenitions"><div id = "loadErrorsDefinitions" class="text-danger"></div><table id=' + childGridID + '></table><div id=' + childGridPagerID + ' class=scroll></div></div>');
+
+            $("#" + childGridID).jqGrid({
+                url: childGridURL,
+                mtype: "GET",
+                //styleUI: "Bootstrap",
+                datatype: "json",
+                page: 1,
+                colModel: [
+                    { label: 'Id', name: 'Id', hidden: true, editable: true, key: true, searchtype: 'integer', width:50, editoptions: { disabled: "disabled" }  },
+                    { label: 'Определение', name: 'Definition', width: 200, editable: true, edittype: "textarea"},
+                    { label: 'Пример', name: 'Example', editable: true, edittype:"textarea" },
+                    { label: 'Public', name: 'Public', width: 23, editable: true, edittype: "checkbox", editoptions: { value: "true:false" } ,formatter: 'checkbox'},
+                    { label: 'Тип', name: 'TypeName', width: 30},
+                    { label: 'Type_Id', name: 'Type_Id', index:'Type.Name', hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.WordTypesStr" }}
+                ],
+                //loadonce: true,
+                width: jqgWidth-100,
+                height: '100%',
+                pager: "#" + childGridPagerID
+            });
+
+
+            $('#' + childGridID).navGrid('#' + childGridPagerID,
+            // the buttons to appear on the toolbar of the grid
+            { edit: true, add: true, del: true, search: true, refresh: true, view: true, position: "left", cloneToTop: false },
+            // options for the Edit Dialog
+            {
+                editCaption: "Редакирование",
+                template: templateTDefinition,
+                errorTextFormat: function (data) {
+                    return 'Ошибка ребактирования: ' + data.responseText
+                },
+                //afterSubmit: afterSubmitEdit,
+                closeAfterEdit: true,
+                url: "@Url.Action("JqGridEdit", "WordDefinition", new { area = "polyglot" })" //+ "?id=" + parentRowKey
+            },
+            // options for the Add Dialog
+            {
+                template: templateTDefinition,
+                errorTextFormat: function (data) {
+                    return 'Ошибка добавления: ' + data.responseText
+                },
+                closeAfterAdd: true,
+                url: "@Url.Action("JqGridAdd", "WordDefinition", new { area = "polyglot" })" + "?word_Id=" + word_Id
+            },
+            // options for the Delete Dailog
+            {
+                errorTextFormat: function (data) {
+                    return 'Ошибка удления: ' + data.responseText
+                },
+                url: "@Url.Action("JqGridDelete", "WordDefinition", new { area = "polyglot" })" + "?word_Id=" + word_Id
+            },
+            {
+                multipleSearch: true,
+            });
+
+
+            $("#" + childGridID).on("jqGridLoadError", function (event, xhr, status, error) {
+                $("#loadErrorsDefinitions").text(error);
+            });
+
+            $("#" + childGridID).on("jqGridLoadComplete", function (event, data) {
+                $("#loadErrorsDefinitions").text("");
+            });
+        }
+
+        $("#tabs").tabs();
+      });
+
+</script>
+

@@ -1,0 +1,18 @@
+﻿@model  cshh.Asp.Models.Polyglot.DefinitionListViewModel
+
+@foreach(var definition in Model.Definitions)
+{
+    @Html.Partial("_View", definition);
+}
+<script>
+
+    function onSuccessDeleteDefinition(id) {
+        $("#wordDefiniiton-" + id).remove();
+    }
+    function onFailureDeleteDefinition(xhr, status, error, id) {
+        let errDivId = "#wordDefiniiton-" + id + " .errorText"
+        $(errDivId).text(error);
+    };
+</script>
+
+

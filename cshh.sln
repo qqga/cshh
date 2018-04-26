@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cshh.Asp", "cshh.Asp\cshh.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cshh.Tests", "cshh.Tests\cshh.Tests.csproj", "{240DA736-C6A3-4802-8B7B-32D0DCC7F010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cshh.Model", "cshh.Model\cshh.Model.csproj", "{0B4A61D0-1D2F-4D5B-8E71-90D1EAF477B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cshh.Model.View", "cshh.Model\cshh.Model.View.csproj", "{0B4A61D0-1D2F-4D5B-8E71-90D1EAF477B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cshh.Model.Services", "cshh.Model.Services\cshh.Model.Services.csproj", "{25753865-9C9D-4004-ACDF-E808C30E87C2}"
 EndProject

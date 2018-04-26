@@ -11,7 +11,7 @@ namespace cshh.Data.Services.Repo
           IRepository, IDisposable
     //where T : class, IBaseEntity
     {
-        protected readonly DbContext Context;
+        public DbContext Context { get; }
 
         //public List<ICrudChecker> CrudCheckerList { get; set; } //todo ICrudChecker убрать из этого класса.
         protected EfRepository(DbContext context)
@@ -72,8 +72,9 @@ namespace cshh.Data.Services.Repo
         }
 
         public virtual void Save()
-        {
+        {            
             var entries = Context.ChangeTracker.Entries();
+            OnSavingEntity?.Invoke(this, entries);
             Context.SaveChanges();
         }
         public event EventHandler<object> OnSavingEntity;

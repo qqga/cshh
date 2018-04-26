@@ -41,11 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
+    <Compile Include="Polyglot\Bookmark.cs" />
     <Compile Include="Polyglot\Language.cs" />
     <Compile Include="Polyglot\UserWord.cs" />
     <Compile Include="Polyglot\Word.cs" />
     <Compile Include="Polyglot\ForeignText.cs" />
-    <Compile Include="Polyglot\WordContext.cs" />
+    <Compile Include="Polyglot\WordDefinition.cs" />
     <Compile Include="Polyglot\WordSet.cs" />
     <Compile Include="Polyglot\WordStatus.cs" />
     <Compile Include="Polyglot\WordType.cs" />

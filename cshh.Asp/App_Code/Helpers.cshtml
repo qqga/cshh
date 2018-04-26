@@ -1,0 +1,95 @@
+﻿@using System.Web.Mvc
+@using System.Web.Routing
+
+
+@helper ReadMenu(IEnumerable<cshh.Asp.Models.Polyglot.BookmarkViewModel> bookmarks)
+    {
+        <style>
+            #read-menu {
+                position: fixed;
+            }
+
+            #read-menu-button {
+                border-radius: 50%;
+                background-color: aquamarine;
+                opacity: 0.4;
+                width: 30px;
+                height: 30px;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            #read-menu-contetn {
+                display: none;
+                background-color: lightgreen;
+                border-radius: 5px;
+                padding: 5px;
+            }
+
+            read-menu-button span.enabled {
+            }
+        </style>
+
+
+        <div id="read-menu">
+            <div id="read-menu-button">
+                <span class="fa fa-angle-double-down" style="left:50%"></span>
+            </div>
+
+            <div id="read-menu-contetn">
+                <ul>
+                    @foreach(var bookmark in bookmarks)
+                    {
+                        <li id="li-bookmark-@bookmark.Id">
+                            <a href="#bookmark-@bookmark.Position" title="@bookmark.Note">@bookmark.Title</a>
+                            <a href="" onclick="deleteBookmarkClick(event,this,@bookmark.Id,@bookmark.Position)" title="Удалить">(х)</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+
+        <script>
+            $(function () {
+                let menuButton$ = $("#read-menu-button"),
+                    menu$ = $("#read-menu"),
+                    menuContent$ = $("#read-menu-contetn"),
+                    menuButtonIcon$ = $("#read-menu-button").find("span");
+
+                //function pos() { menu$.position({ of: menuButton$, my: "center top", at: "center bottom", collision: "flip flip" }) }
+                //pos();
+                let inDrag = false;
+
+
+                menuButton$.click(function () {
+                    if (inDrag) { inDrag = false; return; }
+
+                    menuContent$.toggle("fold", {}, 500)
+
+                    if (menuButtonIcon$.hasClass("fa-angle-double-down"))
+                        menuButtonIcon$.switchClass("fa-angle-double-down", "fa-angle-double-up")
+                    else
+                        menuButtonIcon$.switchClass("fa-angle-double-up", "fa-angle-double-down")
+
+                    //pos();
+
+                });
+
+                menu$.draggable({ start: function () { inDrag = true; } });
+
+            });
+
+            function deleteBookmarkClick(event, sender, id, position) {
+                event.preventDefault();
+
+                $.post("DeleteBookmark?id=" + id).done(function () {
+                    $(sender).parent().detach();
+                    $("span#bookmark-" + position).detach();
+                    alert("ok");
+                });
+
+            }
+        </script>
+
+}

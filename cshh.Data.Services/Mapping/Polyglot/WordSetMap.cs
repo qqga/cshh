@@ -17,6 +17,8 @@ namespace cshh.Data.Services.Mapping.Polyglot
             Property(ws => ws.Name).IsRequired().HasMaxLength(100).IsUnicode();
 
             HasMany(ws => ws.UserWords).WithRequired(uw => uw.Set);
+
+            HasRequired(ws => ws.User).WithMany(u => u.UserWordsSets).HasForeignKey(ws=>ws.User_Id);
         }
     }
 }

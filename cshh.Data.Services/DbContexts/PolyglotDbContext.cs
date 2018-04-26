@@ -9,11 +9,18 @@ using System.Diagnostics;
 using cshh.Data.Polyglot;
 using cshh.Data.User;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Entity.Core.Objects;
 
 namespace cshh.Data.Services.DbContexts
 {
     public class PolyglotDbContext : DbContext
     {
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
+
         static PolyglotDbContext()
         {
             Database.SetInitializer<PolyglotDbContext>(null);
@@ -34,8 +41,7 @@ namespace cshh.Data.Services.DbContexts
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public PolyglotDbContext() : this(DefaultConnectionString)
         {
-
-
+            this.Database.Log = LogContext;
         }
 
         static TraceSwitch _PolyglotDbContextSwitch = new TraceSwitch("PolyglotDbContextSwitch", "DbContext Polyglot TraceSwitch");
@@ -56,7 +62,7 @@ namespace cshh.Data.Services.DbContexts
                     break;
 
                 case TraceLevel.Verbose:
-                    Trace.WriteLine($"====PolyglotDbContext====={Environment.NewLine}{s}{Environment.NewLine}----PolyglotDbContext----");
+                    Trace.WriteLine($"----------PolyglotDbContext--------------{Environment.NewLine}{s}{Environment.NewLine}================");
                     break;
             }
         }
@@ -65,8 +71,18 @@ namespace cshh.Data.Services.DbContexts
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            //modelBuilder.Configurations.Add(new ProductMap());
-        }        
+
+            modelBuilder.Configurations.Add(new Mapping.UserProfileMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.ForeignTextMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.BookmarkMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.LanguageMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.UserWordMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordDefinitionMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordSetMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordStatusMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordTypeMap());
+        }
         public override int SaveChanges()
         {
             //var entries = this.ChangeTracker.Entries();
@@ -76,12 +92,13 @@ namespace cshh.Data.Services.DbContexts
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Word> Words { get; set; }
         public DbSet<ForeignText> ForeignTexts { get; set; }
+        public DbSet<Bookmark> Bookmarks { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<UserWord> UserWords { get; set; }
-        public DbSet<WordDefinition> WordDefinitions { get; set; }        
+        public DbSet<WordDefinition> WordDefinitions { get; set; }
         public DbSet<WordSet> WordSets { get; set; }
         public DbSet<WordStatus> WordStatuses { get; set; }
         public DbSet<WordType> WordTypes { get; set; }
-        
+
     }
 }

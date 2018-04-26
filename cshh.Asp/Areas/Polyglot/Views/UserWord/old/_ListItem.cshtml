@@ -1,0 +1,33 @@
+﻿@model UserWordViewModel
+@{ 
+    var word = Model;
+}
+
+<tr id="word-@word.Id">
+    <td>@word.Text</td>
+    <td>@word.Language</td>
+    <td>@word.Set</td>
+    <td>@word.Status</td>
+    <td>
+        @Ajax.ActionLink("удалить", "DeleteUserWord", new { id = word.Id },
+               new AjaxOptions()
+               {
+                   AllowCache = false,
+                   Confirm = "Удалить слово?",
+                   HttpMethod = "POST",
+                   OnSuccess = $"onSuccessDeleteWord('{word.Id}')",
+                   OnFailure = $"onFailureDeleteWord(xhr,status,error,'{word.Id}')",
+               })
+        |
+        @Ajax.ActionLink("изменить", "Edit", new { id = word.Id },
+               new AjaxOptions()
+               {
+                   AllowCache = false,
+                   InsertionMode = InsertionMode.ReplaceWith,
+                   UpdateTargetId = $"word-{word.Id}"
+               })
+        <div class="errorText">
+        </div>
+    </td>
+</tr>
+

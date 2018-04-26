@@ -40,7 +40,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IValidationDictionary.cs" />
+    <Compile Include="IRepoContainer.cs" />
+    <Compile Include="IWorkContext.cs" />
+    <Compile Include="Polyglot\WordCounter.cs" />
+    <Compile Include="Polyglot\ForeignTexServies.cs" />
+    <Compile Include="Polyglot\PolyglotListsService.cs" />
+    <Compile Include="Polyglot\UserWordsService.cs" />
+    <Compile Include="Polyglot\WordDefinitionService.cs" />
+    <Compile Include="Polyglot\WordsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepoExtensions\IPolyglotRepositoryExtensions.cs" />
+    <Compile Include="User\UserServices.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cshh.Data.Services\cshh.Data.Services.csproj">
+      <Project>{d418d32e-2771-45f1-9286-2ce44388aafc}</Project>
+      <Name>cshh.Data.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cshh.Data\cshh.Data.csproj">
+      <Project>{acf69d50-0fcc-463c-9290-1ddfb3e45ba5}</Project>
+      <Name>cshh.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cshh.Model\cshh.Model.View.csproj">
+      <Project>{0b4a61d0-1d2f-4d5b-8e71-90d1eaf477b1}</Project>
+      <Name>cshh.Model.View</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

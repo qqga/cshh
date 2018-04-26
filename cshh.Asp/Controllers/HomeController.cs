@@ -1,4 +1,5 @@
-﻿using System;
+﻿using cshh.Data.Polyglot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,5 +27,17 @@ namespace cshh.Asp.Controllers
 
             return View();
         }
+
+        public string a()
+        {
+            return DateTime.Now.ToString()+"<br />";
+        }
+
+
+        //public ActionResult Theme(string themeJq)
+        //{
+        //    Response.Cookies.Add(new HttpCookie());
+        //    return View("Index");
+        //}
     }
 }

@@ -1,0 +1,54 @@
+﻿@model DefinitionEditViewModel
+
+@{
+    var divId = $"wordDefiniiton-{Model.Id}";
+}
+<div id="@divId">
+
+    @using(Ajax.BeginForm(new AjaxOptions() { InsertionMode = InsertionMode.ReplaceWith, UpdateTargetId = divId, AllowCache = false }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <dl>
+            <dt> @Html.LabelFor(m => m.WordType)</dt>
+            <dd>
+                @Html.ListBoxFor(m => m.WordType, Model.WordTypes)
+            </dd>
+
+        </dl>
+
+        <dl>
+            <dt> @Html.LabelFor(m => m.Definition)</dt>
+            <dd>
+                @Html.EditorFor(m => m.Definition)
+                @Html.ValidationMessageFor(m => m.Definition)
+            </dd>
+
+        </dl>
+
+        <dl>
+            <dt> @Html.LabelFor(m => m.Example)</dt>
+            <dd>
+                @Html.EditorFor(m => m.Example)
+                @Html.ValidationMessageFor(m => m.Example)
+            </dd>
+
+        </dl>
+
+        <dl>
+            <dt> @Html.LabelFor(m => m.Public)</dt>
+            <dd>
+                @Html.EditorFor(m => m.Public)
+                @Html.ValidationMessageFor(m => m.Public)
+            </dd>
+
+        </dl>
+
+    }
+
+</div>
+
+
