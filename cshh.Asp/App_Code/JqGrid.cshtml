@@ -6,7 +6,7 @@
             /* correct bootstrap*/
             .ui-jqdialog, .ui-jqdialog *, .ui-jqdialog *::before, .ui-jqdialog *::after {
                 box-sizing: content-box;
-                line-height:1;
+                line-height: 1;
             }
 
             /* correct jqui*/
@@ -14,11 +14,10 @@
                 width: 12px;
                 height: 12px;
             }
-
-
         </style>
-        @Styles.Render("~/Content/ui.jqgrid.css")
 
+        @*@Styles.Render("~/Content/ui.jqgrid.css")*@
+        <link href="~/Content/JqGrid/ui.jqgrid.css" rel="stylesheet" />
         @Scripts.Render("~/bundles/JqGrid")
 }
 

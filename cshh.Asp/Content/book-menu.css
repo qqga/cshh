@@ -1,0 +1,23 @@
+﻿#read-menu {
+    position: fixed;
+}
+
+#read-menu-button {
+    border-radius: 50%;
+    background-color: aquamarine;
+    opacity: 0.4;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#read-menu-contetn {
+    display: none;
+    background-color: lightgreen;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+read-menu-button span.enabled {
+}

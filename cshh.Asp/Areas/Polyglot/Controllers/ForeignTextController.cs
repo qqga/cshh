@@ -19,6 +19,7 @@ using cshh.Asp.Models.Common;
 
 namespace cshh.Asp.Areas.Polyglot.Controllers
 {
+    [Authorize]
     public class ForeignTextController : BasePolyglotController
     {
         IPolyglotListsService _polyglotListsService;
@@ -110,7 +111,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
 
             return null;
         }
-
+        [AllowAnonymous]
         public ActionResult ParseWords(int? foreignText_Id)
         {
 
@@ -127,6 +128,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult ParseWords(ParseWordsViewModel parseWordsViewModel)
         {
             var parsedWordsViewModel = new ParsedWordsViewModel();
@@ -183,6 +185,8 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+
         public ActionResult AddBookmark(Bookmark bookmark)
         {
             //Bookmark bookmark = new Bookmark()
@@ -193,10 +197,21 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             //    Title = title
             //};
 
-            _foreignTexServise.AddBookMark(bookmark);
+            try
+            {
+                var newBookmark = _foreignTexServise.AddBookMark(bookmark);
+                return Json(_Mapper.Map<BookmarkViewModel>(newBookmark), JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
+            }
 
-            return Redirect(Url.Action("Read", new { id = bookmark.ForeignText_Id }) + "#bookmark-" + bookmark.Position);
+
+
+            //return Redirect(Url.Action("Read", new { id = bookmark.ForeignText_Id }) + "#bookmark-" + bookmark.Position);
         }
+        [HttpPost]
 
         public ActionResult DeleteBookmark(int id)
         {
@@ -209,6 +224,20 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
             }
             return null;
+        }
+        [HttpPost]
+        
+        public ActionResult EditBookmark(Bookmark bookmark)
+        {
+            try
+            {
+                var bookmarkRes = _foreignTexServise.EditBookmark(bookmark);
+                return Json(_Mapper.Map<BookmarkViewModel>(bookmarkRes), JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
+            }            
         }
     }
 }

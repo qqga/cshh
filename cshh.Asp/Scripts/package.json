@@ -1,0 +1,23 @@
+{
+  "name": "cshhpackage",
+  "version": "1.0.0",
+  "description": "<!-- IGNORE THE HTML BLOCK BELOW, THE INTERESTING PART IS AFTER IT -->",
+  "scripts": {
+    "test": "test",
+    "packP": "webpack --mode=production",
+    "packD": "webpack --mode=development",
+    "packDW": "webpack --mode=development --watch",
+    "start": "http-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.8.3",
+    "expose-loader": "^0.7.5",
+    "jsx-loader": "^0.13.2",
+    "webpack-cli": "^2.1.3"
+  }
+}

@@ -1,0 +1,53 @@
+﻿
+.book-pages {
+    /*background-image: url('../../../Content/images/ForeignText/1.jpg');*/
+    padding: 15px;
+}
+
+.container.body-content {
+    max-width: 100%;
+    padding: 0px;
+}
+
+.book-pages::after {
+    content: "";
+    background-image: url('../../../Content/images/ForeignText/1.jpg');
+    background-clip: padding-box;
+    background-attachment: scroll;
+    opacity: 0.4;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: -1;
+    background-size: cover;
+}
+
+#foreigntext-navbar {
+    position: fixed;
+}
+
+.bookmark-new-href {
+}
+
+
+:target {
+    color: red;
+    transition: color linear 1s;
+    /*transition: font-size linear 1s;
+    font-size: 1.5em;*/
+}
+
+/*:target:before {
+    content: "Закладка";
+    color: red;
+    display: block;
+    margin-top: 30px;
+}
+
+:target:after {
+    content: "---------------";
+    margin-bottom: 10px;
+    display: block;
+}*/

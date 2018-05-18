@@ -1,44 +1,12 @@
 ﻿@model cshh.Asp.Models.Polyglot.ForeignTextReadViewModel
 
+<link href="~/Content/book.css" rel="stylesheet" />
 
 @helper Bookmark(cshh.Asp.Models.Polyglot.BookmarkViewModel bookmark)
-    {
+{
         <span class="fa fa-bookmark" title="@bookmark.Note" id="bookmark-@bookmark.Position">(@bookmark.Title)</span>
 }
-<style>
 
-    .book-pages {
-        /*background-image: url('../../../Content/images/ForeignText/1.jpg');*/
-        padding: 15px;
-    }
-
-    .container.body-content {
-        max-width: 100%;
-        padding: 0px;
-    }
-
-    .book-pages::after {
-        content: "";
-        background-image: url('../../../Content/images/ForeignText/1.jpg');
-        background-clip: padding-box;
-        background-attachment: scroll;
-        opacity: 0.4;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        position: fixed;
-        z-index: -1;
-        background-size: cover;
-    }
-
-    #foreigntext-navbar {
-        position: fixed;
-    }
-
-    .bookmark-new-href {
-    }
-</style>
 @{
 
     System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -48,7 +16,6 @@
     string text = HttpUtility.HtmlEncode(vm.Text);
 
     System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder();
-    //System.Collections.Generic.Dictionary<int, int> dic= new Dictionary<int, int>();
     System.Collections.Hashtable hashtable = new System.Collections.Hashtable(vm.Bookmarks.Count());
     foreach(var bookmark in vm.Bookmarks)
     {
@@ -65,7 +32,7 @@
                 {
 
                     stringBuilder.Append($"<a href='{@Url.Action("AddBookmark", new { position = pointsCount, foreignText_Id = vm.Id, title = "z", note = "x" })}' title='добавить закладку' class='bookmark-new-href'>.</a>");
-                    //dic.Add(pointsCount, stringBuilder.Length);
+
                     if(hashtable.ContainsKey(pointsCount))
                     {
                         var bookmark = hashtable[pointsCount] as cshh.Asp.Models.Polyglot.BookmarkViewModel;
@@ -81,23 +48,6 @@
         }
     }
 
-    //int shift = 0;
-    //foreach(var bookmark in vm.Bookmarks)
-    //{
-    //    var len1 = stringBuilder.Length;
-    //    var realPos = dic.ElementAt(bookmark.Position).Value + shift;
-    //    string bookmarkText = Bookmark(bookmark).ToHtmlString();
-    //    stringBuilder.Insert(realPos, bookmarkText);
-    //    var len2 = stringBuilder.Length;
-    //    shift += len2 - len1;
-    //}
-
-    //foreach(var bookmark in vm.Bookmarks)
-    //{
-    //    string bookmarkTextResult = Bookmark(bookmark.Title, bookmark.Note).ToHtmlString();
-    //    text = text.Insert(bookmark.Position, bookmarkTextResult);
-    //}
-
     text = stringBuilder.ToString();
 
 
@@ -105,31 +55,11 @@
     <div> sw :@sw.Elapsed.ToString()</div>
 }
 
-@*<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="foreigntext-navbar">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active nav-link"> фывафыва </li>
-                <li class="nav-item active nav-link"> ячспыв </li>
-            </ul>
-        </div>
-    </nav>*@
-
-@Helpers.ReadMenu(vm.Bookmarks)
+@Helpers.ReadMenu(vm.Bookmarks, this.Url)
 
 <div id="foreign-text" class="book-pages">
     @Html.Raw(text)
 </div>
 
-<script>
-    $("#foreign-text").keyup(function (e) {
-        console.log('Caret at: ', e.target.selectionStart);
-    });
-
-</script>
-
-<div></div>
 
 

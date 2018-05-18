@@ -1,9 +1,39 @@
 ﻿@model ForeignTextReadViewModel
 @{
-    ForeignTextReadViewModel text = Model;
+    ForeignTextReadViewModel viewModel = Model;
 }
 
-<div>
-    @*@Html.Raw(text.GetTextWithBookmarks(HttpUtility.HtmlEncode, (title, note) => _Helpers.Bookmark(title, note).ToHtmlString()))*@
-    @Html.DisplayFor(m=>m)
-</div>
+@*<div>
+           @Html.Raw(text.GetTextWithBookmarks(HttpUtility.HtmlEncode, (title, note) => _Helpers.Bookmark(title, note).ToHtmlString()))
+            @Html.DisplayFor(m=>m)
+    </div>*@
+
+<link href="~/Content/book.css" rel="stylesheet" />
+<link href="~/Content/book-menu.css" rel="stylesheet" />
+<div id="bookContent"></div>
+
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/ReactFluxImmutable")
+
+
+    @*<script src="~/Scripts/React/Book.jsx"></script>*@
+
+    <script src="~/Scripts/React/build/book.bundle.js"></script>
+
+    <script type="text/javascript">
+
+    var data = @Html.Raw(Json.Encode(Model));
+
+    //var BookEditStore = new BookStore(data);
+    //                        ReactDOM.render(
+    //                            React.createElement(BookContainer),
+    //                        document.getElementById('bookContent')
+    //                        );
+        pack.initBook(data,'bookContent');
+    </script>
+
+}
+

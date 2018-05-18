@@ -5,9 +5,9 @@
     }
 </style>
 <div>
-    @using(Ajax.BeginForm(new AjaxOptions() { AllowCache=false, UpdateTargetId="parsed-words-area", InsertionMode = InsertionMode.Replace, LoadingElementId="load-el" ,   }))
+    @using(Ajax.BeginForm(new AjaxOptions() { AllowCache = false, UpdateTargetId = "parsed-words-area", InsertionMode = InsertionMode.Replace, LoadingElementId = "load-el" }))
     {
-        @Html.ValidationSummary("", new { @class = "text-danger",id ="validation-summary" })
+        @Html.ValidationSummary("", new { @class = "text-danger", id = "validation-summary" })
 
         <div>
             @Html.LabelFor(m => m.SeparatorsStr, "Разделители(☺-разделитель разделителей, ☻-charcode)")
@@ -15,7 +15,7 @@
         </div>
 
         <div>
-            @Html.LabelFor(m => m.SeparatorsStr, "Исключить существующие")
+            @Html.LabelFor(m => m.SeparatorsStr, "Исключить существующие", new { title = "Исключить слова которые уже есть в вашем словаре?" })
             @Html.CheckBoxFor(m => m.ExcludeExists)
         </div>
 

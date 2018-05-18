@@ -17,8 +17,9 @@ namespace cshh.Model.Services.Polyglot
         string[] GetDefaultSeparators();
         IQueryable<ForeignText> GetTexts();
         IEnumerable<WordInfo> ParseWords(string text, string[] separators);
-        void AddBookMark(Bookmark bookmark);
+        Bookmark AddBookMark(Bookmark bookmark);
         void DeleteBookmark(int id);
+        Bookmark EditBookmark(Bookmark bookmark);
     }
 
     public class ForeignTextService : IForeignTextService
@@ -95,7 +96,7 @@ namespace cshh.Model.Services.Polyglot
             WordInfo[] wordsInfo = wc.GetWordsInfo();
             return wordsInfo;
         }
-        public void AddBookMark(Bookmark bookmark) //todo add title, note (angular?)
+        public Bookmark AddBookMark(Bookmark bookmark) //todo add title, note (angular?)
         {
             CheckUserOwning(bookmark.ForeignText_Id);
 
@@ -108,12 +109,27 @@ namespace cshh.Model.Services.Polyglot
             };
 
             PolyglotRepository.Add(newBookmark, true);
+
+            return newBookmark;
         }
         public void DeleteBookmark(int id)
         {
             Bookmark bookmark = PolyglotRepository.GetByKey<Bookmark>(id);
             CheckUserOwning(bookmark.ForeignText_Id);
-            PolyglotRepository.Delete(bookmark,true);
+            PolyglotRepository.Delete(bookmark, true);
+        }
+        public Bookmark EditBookmark(Bookmark bookmark)
+        {
+            Bookmark bookmarkOrigin = PolyglotRepository.GetByKey<Bookmark>(bookmark.Id);
+
+            CheckUserOwning(bookmarkOrigin.ForeignText_Id);
+
+            bookmarkOrigin.Title = bookmark.Title;
+            bookmarkOrigin.Note = bookmark.Note;
+
+            PolyglotRepository.Update(bookmarkOrigin, true);
+
+            return bookmarkOrigin;
         }
     }
 

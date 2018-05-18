@@ -2,34 +2,10 @@
 @using System.Web.Routing
 
 
-@helper ReadMenu(IEnumerable<cshh.Asp.Models.Polyglot.BookmarkViewModel> bookmarks)
+@helper ReadMenu(IEnumerable<cshh.Asp.Models.Polyglot.BookmarkViewModel> bookmarks, UrlHelper urlHelper)
     {
-        <style>
-            #read-menu {
-                position: fixed;
-            }
 
-            #read-menu-button {
-                border-radius: 50%;
-                background-color: aquamarine;
-                opacity: 0.4;
-                width: 30px;
-                height: 30px;
-                text-align: center;
-                cursor: pointer;
-            }
-
-            #read-menu-contetn {
-                display: none;
-                background-color: lightgreen;
-                border-radius: 5px;
-                padding: 5px;
-            }
-
-            read-menu-button span.enabled {
-            }
-        </style>
-
+        <link href="~/Content/book-menu.css" rel="stylesheet" />
 
         <div id="read-menu">
             <div id="read-menu-button">
@@ -57,33 +33,24 @@
                     menuContent$ = $("#read-menu-contetn"),
                     menuButtonIcon$ = $("#read-menu-button").find("span");
 
-                //function pos() { menu$.position({ of: menuButton$, my: "center top", at: "center bottom", collision: "flip flip" }) }
-                //pos();
                 let inDrag = false;
-
-
+                
                 menuButton$.click(function () {
                     if (inDrag) { inDrag = false; return; }
 
                     menuContent$.toggle("fold", {}, 500)
 
-                    if (menuButtonIcon$.hasClass("fa-angle-double-down"))
-                        menuButtonIcon$.switchClass("fa-angle-double-down", "fa-angle-double-up")
-                    else
-                        menuButtonIcon$.switchClass("fa-angle-double-up", "fa-angle-double-down")
-
-                    //pos();
-
+                    this.menuButtonIcon$.toggleClass("fa-angle-double-down").toggleClass("fa-angle-double-up");
+                    
                 });
 
                 menu$.draggable({ start: function () { inDrag = true; } });
-
             });
 
             function deleteBookmarkClick(event, sender, id, position) {
                 event.preventDefault();
 
-                $.post("DeleteBookmark?id=" + id).done(function () {
+                $.post("@urlHelper.Action("DeleteBookmark")" + "?id=" +id ).done(function () {
                     $(sender).parent().detach();
                     $("span#bookmark-" + position).detach();
                     alert("ok");

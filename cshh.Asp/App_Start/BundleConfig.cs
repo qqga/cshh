@@ -24,13 +24,20 @@ namespace cshh.Asp
 
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
             "~/Scripts/jquery-ui.js"));
-
-
-
+            
             bundles.Add(new ScriptBundle("~/bundles/JqGrid").Include(
             "~/Scripts/JqGrid/i18n/grid.locale-ru.js",
             "~/Scripts/JqGrid/jquery.jqGrid.js",
             "~/Scripts/JqGrid/JqGridSettings.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/ReactFluxImmutable").Include(
+            "~/Scripts/react.js",
+            "~/Scripts/react-dom.js",
+            "~/Scripts/Flux.js",
+            "~/Scripts/FluxUtils.js",
+            "~/Scripts/immutable.js"
+            ));
+            
 
             // Используйте версию Modernizr для разработчиков, чтобы учиться работать. Когда вы будете готовы перейти к работе,
             // готово к выпуску, используйте средство сборки по адресу https://modernizr.com, чтобы выбрать только необходимые тесты.
@@ -40,29 +47,42 @@ namespace cshh.Asp
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                      "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
+
+            //bundles.Add(new ScriptBundle("~/bundles/Angular").Include(
+            //   "~/Angular/Bundles/inline.*",
+            //   "~/Angular/Bundles/polyfills.*",
+            //   "~/Angular/Bundles/scripts.*",
+            //   "~/Angular/Bundles/vendor.*",
+            //   "~/Angular/Bundles/main.*"));
+
+
             #endregion
 
 
             #region Style
 
+            #region jqGrid
+
             bundles.Add(new StyleBundle("~/Content/ui.jqgrid-bootstrap.css").Include(
 "~/Content/JqGrid/ui.jqgrid-bootstrap4.css"));
 
-            bundles.Add(new StyleBundle("~/Content/ui.jqgrid.css").Include(
-"~/Content/JqGrid/ui.jqgrid.css"));
+//            bundles.Add(new StyleBundle("~/Content/ui.jqgrid.css").Include(
+//"~/Content/JqGrid/ui.jqgrid.css"));
 
-            #region jquerty ui theme
-            bundles.Add(new StyleBundle("~/bundles/jquery-ui-base").Include("~/Content/jquery-ui.css"));
-            bundles.Add(new StyleBundle("~/bundles/jquery-ui-swanky").Include("~/Content/JqTheme/swanky/jquery-ui.css"));
-            bundles.Add(new StyleBundle("~/bundles/jquery-ui-redmond").Include("~/Content/JqTheme/redmond/jquery-ui.css"));
-            bundles.Add(new StyleBundle("~/bundles/jquery-ui-overcast").Include("~/Content/JqTheme/overcast/jquery-ui.css"));            
             #endregion
 
-
+            //#region jquerty ui theme
+            //bundles.Add(new StyleBundle("~/bundles/jquery-ui-base").Include("~/Content/jquery-ui.css"));
+            //bundles.Add(new StyleBundle("~/bundles/jquery-ui-swanky").Include("~/Content/JqTheme/swanky/jquery-ui.css"));
+            //bundles.Add(new StyleBundle("~/bundles/jquery-ui-redmond").Include("~/Content/JqTheme/redmond/jquery-ui.css"));
+            //bundles.Add(new StyleBundle("~/bundles/jquery-ui-overcast").Include("~/Content/JqTheme/overcast/jquery-ui.css"));            
+            //#endregion
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            //bundles.Add(new StyleBundle("~/Content/Angular").Include("~/Angular/Bundles/styles.*"));
             #endregion
         }
     }
