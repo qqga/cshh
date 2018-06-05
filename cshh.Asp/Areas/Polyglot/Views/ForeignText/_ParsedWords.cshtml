@@ -3,10 +3,10 @@
 <div @*style="margin-left:20px"*@>
     <table id="jqGrid-parsedWords"></table>
     <div id="jqGridPager-parsedWords"></div>
-    @using(Html.BeginForm("SaveParsedWords", "ForeignText", FormMethod.Post, new { id = "parsed-words-form" }))
+    @using(Ajax.BeginForm("SaveParsedWords", "ForeignText", new AjaxOptions() { LoadingElementId = "spinner", OnComplete = "saveParcedWordsComplete", OnBegin = "saveParcedWordsBegin", HttpMethod = "POST", AllowCache = false, OnFailure = "saveParcedWordsFail", OnSuccess = "saveParcedWordsSuccess" }, new { id = "parsed-words-form" }))
     {
         @Html.ValidationSummary("", new { @class = "text-danger" })
-
+        <div id="saveParsedWordsAjaxInfo" class="text-danger"></div>
         <div>
             <div>@Html.LabelFor(m => m.Language_Id, "Язык")</div>
             <div>@Html.DropDownListFor(m => m.Language_Id, Model.Languages)</div>
@@ -22,22 +22,67 @@
             <div>@Html.TextBoxFor(m => m.SetName, Model.Sets)</div>
         </div>
         <input type="hidden" name="WordsJson" />
-        <input type="submit" value="Сохранить слова" />
+        <input type="submit" value="Сохранить слова" id="saveParcedWordsSubmit" />
+        <i style="display:none" class="fas fa-spinner fa-pulse" id="spinner"></i>
+        <div></div>
     }
 </div>
 <hr />
 <script>
 
+    function getinfo_div$() { return $("#saveParsedWordsAjaxInfo"); }
+
+    function saveParcedWordsComplete() {
+        $('#saveParcedWordsSubmit').show();
+    }
+    function saveParcedWordsBegin() {
+        $('#saveParcedWordsSubmit').hide();
+    }
+
     $("#parsed-words-form").submit(function (eventObj) {
-        $("input[name='WordsJson']").val(JSON.stringify(mydata));
+        let rows = GetSelectedRows();//mydata
+        if (rows.length == 0) {
+            showAjaxResult('Не выбраны строки!');
+            return false;
+        }
+        var rowsAsStr = JSON.stringify(rows);
+        $("input[name='WordsJson']").val(rowsAsStr);
         return true;
     });
 
+    function GetSelectedRows() {
+
+        let jqGrid = $("#jqGrid-parsedWords");
+        let selectedIds$ = jqGrid.getGridParam('selarrrow');
+        let rows = selectedIds$.map(function (id) { return jqGrid.getRowData(id); });
+        return rows;
+    }
+
+    function saveParcedWordsSuccess(data, st, resp) {
+
+        if (data) {
+            showAjaxResult("Saved succesfull " + data + " words at " + new Date().toLocaleString());
+            getinfo_div$().switchClass("text-danger", "text-positive");
+        }
+        else
+            showAjaxResult('are you logged in?');
+
+    }
+
+    function saveParcedWordsFail(xhr, st, text) {
+
+        showAjaxResult('save error at '+new Date().toLocaleString()+' : \''+ text+'\'');
+        getinfo_div$().switchClass("text-positive", "text-danger");
+    }
+
+    function showAjaxResult(message) {
+        getinfo_div$().text(message);
+    }
 
     @if(!string.IsNullOrEmpty(Model.WordsJson))
     {<text>
 
-    var mydata = JSON.parse('@Html.Raw(Model.WordsJson)');
+    var mydata = JSON.parse('@Html.Raw(HttpUtility.JavaScriptStringEncode(Model.WordsJson))');
 
     function gridIntin() {
         $("#jqGrid-parsedWords").jqGrid({

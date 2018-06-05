@@ -168,11 +168,21 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
         [HttpPost]
         public ActionResult SaveParsedWords(ParsedWordsViewModel parseWordsViewModel)
         {
-            var deserializeObject = JsonConvert.DeserializeObject<WordInfo[]>(parseWordsViewModel.WordsJson);
+            int wordsCount = 0;
+            try
+            {                
+                var deserializeObject = JsonConvert.DeserializeObject<WordInfo[]>(parseWordsViewModel.WordsJson);
+                var words = deserializeObject.Select(w => w.Word);
+                _userWordsService.Add(words, parseWordsViewModel.SetName, parseWordsViewModel.Language_Id, parseWordsViewModel.Status_Id);
+                wordsCount = words.Count();
+            }
+            catch(Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
+            }
 
-            _userWordsService.Add(deserializeObject.Select(w => w.Word), parseWordsViewModel.SetName, parseWordsViewModel.Language_Id, parseWordsViewModel.Status_Id);
-
-            return RedirectToAction("Index", "Home");
+            return Json(wordsCount);
+            //return RedirectToAction("Index", "Home");
         }
 
 
@@ -226,7 +236,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             return null;
         }
         [HttpPost]
-        
+
         public ActionResult EditBookmark(Bookmark bookmark)
         {
             try
@@ -237,7 +247,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             catch(Exception ex)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
-            }            
+            }
         }
     }
 }

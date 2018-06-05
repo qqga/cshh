@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -16,7 +17,13 @@ namespace cshh.Asp
     {
         protected void Application_Start()
         {
-            EncryptConnectionString();
+
+            if(!HostingEnvironment.IsDevelopmentEnvironment)
+            {
+                EncryptConnectionString();
+            }
+            
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -24,9 +31,10 @@ namespace cshh.Asp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
-        [Conditional("ENCRYPT")]
+        //[Conditional("ENCRYPT")]
         public void EncryptConnectionString()
         {
+           
             Configuration config = WebConfigurationManager.OpenWebConfiguration("/"); // try it if some issue "/" or HttpContext.Current.Request.ApplicationPath
             ConfigurationSection section = config.GetSection("connectionStrings");
             if(!section.SectionInformation.IsProtected)
