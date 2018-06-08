@@ -52,7 +52,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             }
             catch(Exception ex)
             {
-                return this.JqGridBadRequest(ex);
+                return this.BadRequestAndCollectEx(ex);
             }
             return null;
         }
@@ -68,7 +68,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             }
             catch(Exception ex)
             {
-                return this.JqGridBadRequest(ex);
+                return this.BadRequestAndCollectEx(ex);
             }
             return null;
         }
@@ -82,7 +82,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             }
             catch(Exception ex)
             {
-                return this.JqGridBadRequest(ex);
+                return this.BadRequestAndCollectEx(ex);
             }
             return null;
         }

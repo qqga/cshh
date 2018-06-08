@@ -35,7 +35,7 @@ namespace cshh.Asp
             return string.IsNullOrEmpty(userId) ? null : userRepository.GetUserProfile(userId);
         }
 
-        public static string JqGridBadRequest(this Controller controller, Exception ex)
+        public static string BadRequestAndCollectEx(this Controller controller, Exception ex)
         {
             controller.Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
 

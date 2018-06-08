@@ -1,20 +1,18 @@
-﻿using cshh.Asp.Models.Polyglot;
+﻿using AutoMapper;
+using Common.Asp.JqGrid;
+using cshh.Asp.Extensions;
+using cshh.Asp.Models.Common;
+using cshh.Asp.Models.Polyglot;
 using cshh.Data.Polyglot;
+using cshh.Data.Services.Repo;
 using cshh.Model.Services.Polyglot;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using cshh.Asp.Extensions;
-using Common.Asp.JqGrid;
-using System.Linq.Expressions;
-using cshh.Data.Services.Repo;
-using Newtonsoft.Json;
-using AutoMapper;
-using cshh.Asp.Models.Common;
 //using System.Linq.Dynamic;
 
 namespace cshh.Asp.Areas.Polyglot.Controllers
@@ -94,7 +92,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             }
             catch(Exception ex)
             {
-                return this.JqGridBadRequest(ex);
+                return this.BadRequestAndCollectEx(ex);
             }
 
             return null;
@@ -112,7 +110,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             }
             catch(Exception ex)
             {
-                return this.JqGridBadRequest(ex);
+                return this.BadRequestAndCollectEx(ex);
             }
 
             return null;
@@ -133,7 +131,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             }
             catch(Exception ex)
             {
-                return this.JqGridBadRequest(ex);
+                return this.BadRequestAndCollectEx(ex);
             }
             return null;
         }
@@ -237,6 +235,52 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
         //}
 
         #endregion
+
+        public ActionResult AddWordExt(string word, string userKey, string defaultSetName)
+        {
+            if(string.IsNullOrWhiteSpace(userKey))
+                throw new Exception("word o userKey not set");
+
+            word = word.Trim();
+            var vm = new AddWordExtViewModel()
+            {
+                UserKey = userKey,
+                Sets = _wordsService.GetUserWordsSets(userKey).Select(s => s.Name).ToList(),
+                WordText = word,
+                Languages = _PolyglotListsService.GetLanguaches().ToSeletListItems(l => l.Name, l => l.Id, 1),
+                Statuses = _PolyglotListsService.GetWordStatuses().ToSeletListItems(s => s.Name, s => s.Id, 1),
+                UrlPost = Request.Url.GetLeftPart(UriPartial.Path)
+            };
+            var existWordInfo = _wordsService.GetWordTranslates(word, userKey);
+            if(existWordInfo != null)
+                vm.ExistWordInfo = "Слово есть вашем словаре: " + existWordInfo;
+
+            vm.SetName = !string.IsNullOrWhiteSpace(defaultSetName) ? defaultSetName : vm.Sets.First();
+
+            return View(vm);
+
+        }
+
+        [HttpPost]
+        public ActionResult AddWordExt(AddWordExtViewModel userWordVM)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            try
+            {
+                UserWord userWord = _mapper.Map<UserWord>(userWordVM);
+
+                //throw new Exception("sdfg");
+                _wordsService.Add(userWord, userWordVM.UserKey);
+            }
+            catch(Exception ex)
+            {
+                //return Json(ex.CollectMessages());
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(ex.CollectMessages());
+            }
+            return Json("Ok");
+        }
 
         public class JqGrid_WordEditLists //todo
         {

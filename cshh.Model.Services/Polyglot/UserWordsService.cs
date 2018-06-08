@@ -18,9 +18,10 @@ namespace cshh.Model.Services.Polyglot
         IQueryable<UserWord> GetUserWords(string userAppId);
         IQueryable<UserWord> GetUserWords();
         UserWord Add(UserWord userWord);
+        UserWord Add(UserWord word, string userKey);
         void Delete(int id);
         void Edit(UserWord userWord);
-
+        string GetWordTranslates(string word, string appUserId);
 
     }
     public class UserWordsService : IUserWordsService
@@ -63,10 +64,11 @@ namespace cshh.Model.Services.Polyglot
 
 
 
-        public UserWord Add(UserWord userWord)
+        public UserWord Add(UserWord userWord) => Add(userWord, _workContext.UserAppId);
+        public UserWord Add(UserWord userWord, string userAppId)
         {
             var UserAppId = _workContext.UserAppId;
-            UserProfile user = Repository.GetUserProfile(UserAppId);
+            UserProfile user = Repository.GetUserProfile(userAppId);
 
             if(user == null)
                 throw new Exception("Пользователь не найден");
@@ -83,7 +85,10 @@ namespace cshh.Model.Services.Polyglot
             //UserWord userWord = new UserWord() { Set = wordSet, Status_Id = status.Id, Word = FindWordOrDefault(word) };
             Repository.Add(newUserWord, true);
             return newUserWord;
+
         }
+
+
         public void Add(IEnumerable<string> words, string setName, int lang_id, int status_id)//todo textid unsaved
         {
             var UserAppId = _workContext.UserAppId;
@@ -148,7 +153,7 @@ namespace cshh.Model.Services.Polyglot
                     var newWordSet = new WordSet() { Name = name };
                     newWordSet.User = user;
                     original.Set = newWordSet;
-                }                
+                }
             }
         }
         #endregion
@@ -167,6 +172,33 @@ namespace cshh.Model.Services.Polyglot
         bool IsUserWordOwning(int userWordId, string appUserId)
         {
             return Repository.UserWords.Any(uw => uw.Id == userWordId && uw.Set.User.ApplicationUserId == appUserId);
+        }
+
+        public string GetWordTranslates(string word, string appUserId)// todo only user translates param?
+        {
+            string result = null;
+            var wordExist =
+                GetUserWords(appUserId)
+                .Where(w => w.Word.Text == word) 
+                .IncludeQ(w => w.Word.Language)
+                .IncludeQ("Word.TranslationsFrom.Language")
+                .IncludeQ("Word.TranslationsTo.Language")
+                .FirstOrDefault();
+
+            if(wordExist != null)
+            {
+
+                result = $"{wordExist.Word.Text} ({wordExist.Word.Language.ShortName})" + Environment.NewLine;
+                var translations = new List<Word>(wordExist.Word.TranslationsTo);
+                translations.AddRange(wordExist.Word.TranslationsFrom);
+
+                result += string.Join(
+                    Environment.NewLine,
+                    translations.GroupBy(w => w.Language.ShortName).Select(w => $"{w.Key}: ({string.Join(", ", w.Select(ww => ww.Text))})")
+                    );
+            }
+
+            return result;
         }
     }
 }

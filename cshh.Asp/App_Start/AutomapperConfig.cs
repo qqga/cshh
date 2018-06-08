@@ -35,6 +35,10 @@ namespace cshh.Asp
 
             //CreateMap<Word, WordViewModel>().ReverseMap().ValidateMemberList(MemberList.None);
 
+            //CreateMap<AddWordExtViewModel, UserWord>();
+            CreateMap<UserWord, AddWordExtViewModel>().ReverseMap()// столько времени потеряно чтобы разобраться что uflattening работает только с reversmap ... выкинуть нафик этот автомапер, времени на нем больше теряется, а доверять все равно ему нельзя и в сервисах перемапивать приходиться.
+                .AfterMap((vm,o)=> { o.Word.Language = null; o.Word.Language_Id = vm.WordLanguage_Id; });// + эта ересть, ну его нафик
+
             UserWordMapper.Map(this);
 
             CreateMap<ForeignText, ForeignTextViewModel>()

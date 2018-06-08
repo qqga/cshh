@@ -1,0 +1,41 @@
+{
+  "name": "cshh polyglot extension",
+  "version": "1.0",
+  "description": "cshh polyglot extension for chrome browser",
+  "manifest_version": 2,
+
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/cheese16.png",
+      "24": "images/cheese24.png",
+      "32": "images/cheese32.png"
+    }
+  },
+
+  "permissions": [ "contextMenus", "<all_urls>", "http://www.cshh.ru/", "activeTab", "tabs", "storage" ],
+  "background": {
+    "persistent": false,
+    "scripts": [ "common.js", "context.js" ]
+  },
+
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "js": [ "content.js" ],
+      "css": [ "content.css" ]
+    }
+  ],
+
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+
+  "icons": {
+
+    "48": "images/cheese48.png",
+    "128": "images/cheese128.png"
+  }
+
+}

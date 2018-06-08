@@ -265,6 +265,7 @@
     <Compile Include="Areas\Polyglot\Controllers\Naative\DefinitionController.cs" />
     <Compile Include="Areas\Polyglot\Controllers\WordController.cs" />
     <Compile Include="Areas\Polyglot\Controllers\WordDefinitionController.cs" />
+    <Compile Include="Areas\Polyglot\Models\AddWordExtViewModel.cs" />
     <Compile Include="Areas\Polyglot\Models\ForeignTextReadViewModel.cs" />
     <Compile Include="Areas\Polyglot\Models\ParseWordsViewModel.cs" />
     <Compile Include="Areas\Polyglot\Models\ForeignTextViewModel.cs" />
@@ -843,6 +844,7 @@
     <Content Include="Areas\Polyglot\Views\ForeignText\Index.cshtml" />
     <Content Include="Areas\Polyglot\Views\ForeignText\Read.cshtml" />
     <Content Include="App_Code\Helpers.cshtml" />
+    <Content Include="Areas\Polyglot\Views\UserWord\AddWordExt.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\fozzy profile.pubxml" />

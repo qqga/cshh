@@ -17,6 +17,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cshh.Data.Services", "cshh.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cshh.Data", "cshh.Data\cshh.Data.csproj", "{ACF69D50-0FCC-463C-9290-1DDFB3E45BA5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BrowserExt", "BrowserExt", "{692B7D48-46C4-4231-BA14-4FE77D596DA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chrome", "Chrome", "{0310B336-772E-47DA-8FD9-CE975639440A}"
+	ProjectSection(SolutionItems) = preProject
+		BrowserExt\Chrome\common.js = BrowserExt\Chrome\common.js
+		BrowserExt\Chrome\content.css = BrowserExt\Chrome\content.css
+		BrowserExt\Chrome\content.js = BrowserExt\Chrome\content.js
+		BrowserExt\Chrome\context.js = BrowserExt\Chrome\context.js
+		BrowserExt\Chrome\manifest.json = BrowserExt\Chrome\manifest.json
+		BrowserExt\Chrome\Options.html = BrowserExt\Chrome\Options.html
+		BrowserExt\Chrome\options.js = BrowserExt\Chrome\options.js
+		BrowserExt\Chrome\popup.html = BrowserExt\Chrome\popup.html
+		BrowserExt\Chrome\popup.js = BrowserExt\Chrome\popup.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{E1C4D4EC-6183-405E-9711-B5473B6A87E2}"
+	ProjectSection(SolutionItems) = preProject
+		BrowserExt\Chrome\images\cheese128.png = BrowserExt\Chrome\images\cheese128.png
+		BrowserExt\Chrome\images\cheese16.png = BrowserExt\Chrome\images\cheese16.png
+		BrowserExt\Chrome\images\cheese24.png = BrowserExt\Chrome\images\cheese24.png
+		BrowserExt\Chrome\images\cheese32.png = BrowserExt\Chrome\images\cheese32.png
+		BrowserExt\Chrome\images\cheese48.png = BrowserExt\Chrome\images\cheese48.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +77,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{240DA736-C6A3-4802-8B7B-32D0DCC7F010} = {D5B89C81-2442-42EF-9C39-29D4B5830AB2}
+		{0310B336-772E-47DA-8FD9-CE975639440A} = {692B7D48-46C4-4231-BA14-4FE77D596DA0}
+		{E1C4D4EC-6183-405E-9711-B5473B6A87E2} = {0310B336-772E-47DA-8FD9-CE975639440A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {20BCDF35-0BC1-4372-A204-045015A153BC}
