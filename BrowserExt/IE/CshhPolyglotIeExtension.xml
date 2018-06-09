@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<openServiceDescription xmlns="http://www.microsoft.com/schemas/openservicedescription/1.0">
+  <homepageUrl>http://cshh.ru</homepageUrl>
+  <display>
+    <name>Cshh polyglot IE extension</name>
+    <!--<icon>http://cshh.ru/favicon.ico</icon>-->
+  </display>
+  <activity category="Translation">
+    <activityAction context="selection" >
+      <execute action="http://cshh.ru/polyglot/UserWord/AddWordExt">      
+        <parameter name="word" value="{selection}" type="text" />
+        <parameter name="userKey" value="649cd23f-6d04-40f8-9c4c-3028dbe0ab7e" type="text" />
+        <parameter name="defaultSetName" value="IeExtension" type="text" />
+      </execute>
+      <preview action="http://cshh.ru/polyglot/UserWord/AddWordExt">
+        <parameter name="word" value="{selection}" type="text" />
+        <parameter name="userKey" value="649cd23f-6d04-40f8-9c4c-3028dbe0ab7e" type="text" />
+        <parameter name="defaultSetName" value="IeExtension" type="text" />
+      </preview>
+    </activityAction>
+  </activity>
+</openServiceDescription>
