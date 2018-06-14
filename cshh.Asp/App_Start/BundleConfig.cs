@@ -28,7 +28,9 @@ namespace cshh.Asp
             bundles.Add(new ScriptBundle("~/bundles/JqGrid").Include(
             "~/Scripts/JqGrid/i18n/grid.locale-ru.js",
             "~/Scripts/JqGrid/jquery.jqGrid.js",
-            "~/Scripts/JqGrid/JqGridSettings.js"));
+            "~/Scripts/JqGrid/JqGridSettings.js",
+            "~/Scripts/JqGrid/jqGridExtensions.js"
+            ));
 
             bundles.Add(new ScriptBundle("~/bundles/ReactFluxImmutable").Include(
             "~/Scripts/react.js",

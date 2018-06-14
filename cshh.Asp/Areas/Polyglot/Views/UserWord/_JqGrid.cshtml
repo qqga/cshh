@@ -62,7 +62,7 @@
                     { label: "Id", name: "Id", hidden: true, editable: true, key: true, searchtype: 'integer', width:50, editoptions: { disabled: "disabled" } },
                     { label: "Word_Id", name: "Word_Id", hidden: true, editable: true, editoptions: { type: "hidden" } },
 
-                    { label: "Слово", name: "WordText", index: "Word.Text", editable: true, editoptions: { disabled: "disabled", class: "addOnlyEnabled" } },
+                    { label: "Слово", name: "WordText", index: "Word.Text", editable: true/*, editoptions: { disabled: "disabled", class: "addOnlyEnabled" }*/ },
                     //{ label: "Text", name: "Word.Text", index: "qwerasdf"},
 
                     { label: "Набор", name: "SetName", index: "Set.Name", width: 100, /*stype: "select",*/ editable: true, edittype: "custom", editoptions: { custom_element: setInputElem, custom_value: setInputValue, dataInit: corectId } },

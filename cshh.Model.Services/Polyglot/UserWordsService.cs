@@ -130,10 +130,17 @@ namespace cshh.Model.Services.Polyglot
             {
                 throw new Exception("Not your word!");
             }
-            UserWord origin = Repository.GetByKey<UserWord>(userWord.Id);
+            UserWord origin = Repository.GetByKey<UserWord>(userWord.Id, uw => uw.Word);
             //origin.Set_Id = userWord.Set_Id;
             SetWordSet(origin, userWord, user);
             origin.Status_Id = userWord.Status_Id;
+
+            if(userWord.Word.Text.Trim() != origin.Word.Text.Trim() && //если изменился текст
+                origin.Word.UserProfile_Id == user.Id && // и пользователь владелец //↓ и нет других пользователей у этого слова.
+                Repository.UserProfiles.Where(up => up.UserWordsSets.SelectMany(set => set.UserWords).Where(uw => uw.Word_Id == userWord.Word_Id).Count() > 0).Count() <= 1)
+            {
+                origin.Word.Text = userWord.Word.Text;
+            }
 
             Repository.Update(origin, true);
         }
@@ -179,7 +186,7 @@ namespace cshh.Model.Services.Polyglot
             string result = null;
             var wordExist =
                 GetUserWords(appUserId)
-                .Where(w => w.Word.Text == word) 
+                .Where(w => w.Word.Text == word)
                 .IncludeQ(w => w.Word.Language)
                 .IncludeQ("Word.TranslationsFrom.Language")
                 .IncludeQ("Word.TranslationsTo.Language")

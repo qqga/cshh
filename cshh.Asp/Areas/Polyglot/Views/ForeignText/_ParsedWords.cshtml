@@ -40,7 +40,7 @@
     }
 
     $("#parsed-words-form").submit(function (eventObj) {
-        let rows = GetSelectedRows();//mydata
+        let rows = JqGridExt.GetSelectedRows("#jqGrid-parsedWords");//mydata
         if (rows.length == 0) {
             showAjaxResult('Не выбраны строки!');
             return false;
@@ -50,14 +50,7 @@
         return true;
     });
 
-    function GetSelectedRows() {
-
-        let jqGrid = $("#jqGrid-parsedWords");
-        let selectedIds$ = jqGrid.getGridParam('selarrrow');
-        let rows = selectedIds$.map(function (id) { return jqGrid.getRowData(id); });
-        return rows;
-    }
-
+    
     function saveParcedWordsSuccess(data, st, resp) {
 
         if (data) {

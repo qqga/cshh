@@ -1,0 +1,50 @@
+﻿
+<div id="train-remember-translate">
+    <div v-show="!current">Выберите слова</div>
+    <button v-on:click="next">Дальше</button>
+    <hr />
+    <div v-show="current">
+        <div v-bind:title="translate"><b>{{word}}</b></div>
+        <hr />
+        <div id="train-remember-translate-translates">
+            <h5>Перевод</h5>
+            <div>{{translate}}</div>
+            <h5>Примеры</h5>
+            <div>todo</div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+    $(function () {
+
+        let trainRememberTranslate = new Vue({
+            el: "#train-remember-translate",
+            data: {
+                current: null,
+                isVisibleTranslate: false
+            },
+            methods: {
+                next: function () {
+                    this.isVisibleTranslate = false;
+                    this.current = wordSelector.getWord();
+                }
+            },
+            computed: {
+                word: function () {
+                    return this.current ? this.current.WordText : "";
+                },
+                translate: function () {
+                    return this.current ? this.current.Translations || "нет перевода" : "";
+                }
+            }
+        });
+        $("#train-remember-translate-translates").accordion({ collapsible: true, active: false });
+    });
+
+</script>
+

@@ -18,8 +18,7 @@
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
-select
-{
+select {
     max-width: 280px;
 }
 
@@ -34,5 +33,80 @@ div.ui-paging-info {
 
 
 .text-positive {
-color:limegreen;
+    color: limegreen;
 }
+
+.text-error {
+    color: red;
+}
+
+div.link-tab {
+    display: none;
+}
+
+    div.link-tab:target {
+        display:block;
+    }
+
+
+/*chekbox slider*/
+
+.checkbox-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+    .checkbox-switch input {
+        display: none;
+    }
+
+.checkbox-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .checkbox-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .checkbox-slider {
+    background-color: #2196F3;
+}
+
+input:focus + .checkbox-slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .checkbox-slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.checkbox-slider.checkbox-round {
+    border-radius: 34px;
+}
+
+.checkbox-slider.checkbox-round:before {
+    border-radius: 50%;
+}
+
+/*End chekbox slider*/

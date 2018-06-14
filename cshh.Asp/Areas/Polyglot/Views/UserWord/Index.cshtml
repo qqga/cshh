@@ -1,6 +1,73 @@
 ﻿
-    <div>
-        @JqGrid.JqGridBundles()
-        @Html.Action("JqGridEditList", "UserWord", new { area = "polyglot" })
-    </div>
+<div>
+    @JqGrid.JqGridBundles()
+    @Html.Action("JqGridEditList", "UserWord", new { area = "polyglot" })
 
+    <div id="trains-container">
+        <h3>Упражнения</h3>
+        @*<button onclick="selectWords()">Выбрать слова</button>*@
+        <div id="trains-tab-menu">
+            <a href="#write-from-translate">Перевод -> Оригинал</a> |
+            <a href="#remeber-translate">Вспомнить перевод</a> |
+        </div>
+
+        <div id="write-from-translate" class="link-tab">
+            @Html.Partial("Train/_WriteFromTranslate")
+        </div>
+        <div id="remeber-translate" class="link-tab">
+            @Html.Partial("Train/_RememberTranslate")
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/vue.js"></script>
+    <script>
+        let wordSelector = {
+            statisticObj: {},
+            getWord: function () {
+                let statisticObj = this.statisticObj;//for capture
+
+                var selectedRows = JqGridExt.GetSelectedRows("#jqGridUserWords");
+
+                let selectedCount = selectedRows.length;
+
+                if (selectedCount == 0) {
+                    alert('Не выбраны слова!');
+                    return;
+                }
+
+                let randomIndex = Math.round(Math.random() * (selectedCount - 1));
+
+                let randomWord = selectedRows[randomIndex];
+                let resultWord = randomWord;
+                let allreadySelected = statisticObj[resultWord.WordText];
+
+                if (allreadySelected) {
+
+                    let smallerFinded = selectedRows.find(function (r) {
+                        return ((statisticObj[r.WordText] ? statisticObj[r.WordText].count : 0) < allreadySelected.count)
+                    });
+
+                    if (smallerFinded) {
+                        resultWord = smallerFinded;
+                    }
+                }
+
+                let existStatistic = this.statisticObj[resultWord.WordText];
+                if (existStatistic)
+                    existStatistic.count++
+                else
+                    this.statisticObj[resultWord.WordText] = { word: resultWord, count: 1 };
+
+                return resultWord;
+            },
+            reset: function () {
+                statisticObj = {};
+            }
+        }
+
+    </script>
+
+}

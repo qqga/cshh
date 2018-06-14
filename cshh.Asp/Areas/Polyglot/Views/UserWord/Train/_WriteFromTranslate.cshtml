@@ -1,0 +1,67 @@
+﻿
+
+<div id="train-write-from-translate-vue">
+
+    <div v-show="current">
+        <div>Перевод: <b>{{translations}}</b></div>
+        <div v-show="!isCorrect" class="text-error">Неверно</div>
+        <div v-show="isCorrect" class="text-positive">Верно</div>
+        <input type="text" v-model="entered" v-on:keyup.enter="next" />
+
+    </div>
+    <button v-on:click="next">Дальше</button>
+    <div v-show="!current">
+        выберите слова
+    </div>
+    @*<button onClick="trainWriteFromTranslate.next()">Дальше...</button>
+
+        <div id="train-write-from-translate-translations">
+        </div>
+        <input type="text" />*@
+
+</div>
+
+
+
+<script>
+    $(function () {
+        let trainWriteFromTranslateApp = new Vue({
+
+            el: "#train-write-from-translate-vue",
+            methods: {
+                next: function () {
+                    this.entered = "";
+                    this.current = wordSelector.getWord();
+                    if (this.current && !this.current.Translations)
+                        this.current.Translations = this.current.WordText+ " - нет перевода.";
+                }
+            },
+            data: {
+                current: null,
+                entered: ""
+            },
+            computed: {
+                isCorrect: function () {
+                    return this.current && this.entered.trim() == this.current.WordText;
+                },
+                translations: function () {
+                    return this.current ? this.current.Translations : null;
+                }
+            }
+
+        });
+
+    });
+
+
+        //let trainWriteFromTranslate = {
+        //    currentWord: null,
+        //    next: function () {
+        //        currentWord = wordSelector.getWord();
+        //        if (currentWord)
+        //            $('#train-write-from-translate-translations').text(word.Translations);
+        //    }
+        //}
+
+
+</script>
