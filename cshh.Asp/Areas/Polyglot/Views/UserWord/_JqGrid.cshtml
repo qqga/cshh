@@ -7,8 +7,64 @@
     <table id="jqGridUserWords"></table>
     <div id="jqGridUserWordsPager"></div>
 </div>
+
+<div id="user-words-chage-staus-dialog">
+    <form>
+        <label>Изменить статус выбранных слов?</label>
+        @Html.ListBox("status_Id", Model.Statuses, new { id = "user-words-chage-staus-select" })
+        <div id="user-words-chage-staus-dialog-info"></div>
+    </form>
+</div>
 <script>
-        $.jgrid.defaults.responsive = true;
+    $(function () {
+
+        let userWordsChageStausDialog = $("#user-words-chage-staus-dialog").dialog({
+        autoOpen: false,
+        height: 400,
+        width: 350,
+        modal: true,
+        buttons: {
+            "Изменить": function () {
+                var selectedRows = JqGridExt.GetSelectedRows("#jqGridUserWords");
+                let selectedIds = selectedRows.map(function (r) { return r.Id });
+                let status_Id = userWordsChageStausDialog.find('#user-words-chage-staus-select').val()[0];
+                function showResult(s, isErr) {
+                    let container = $('#user-words-chage-staus-dialog-info');
+                    container.html(s);
+                    if (isErr)
+                        container.switchClass("text-positive", "text-error");
+                    else
+                        container.switchClass("text-error", "text-positive");
+                }
+                $.ajax('@Url.Action("ChangeWordsStatus","UserWord",new {area="Polyglot" })', {
+                    cache: false,
+                    data: JSON.stringify({ status_Id: status_Id, words: selectedIds  }),
+                    traditional: true,
+                    type: "Post",
+                    datatype: "Json",
+                    contentType: 'application/json; charset=utf-8',
+                    error: function (xhr, mess, stats  ) {
+                        showResult(mess + " " +xhr.responseText, true);
+                    },
+                    success: function (mess, stats,  xhr) {
+                        showResult(xhr.responseText);
+                        $('#jqGridUserWords').trigger('reloadGrid');
+                    },
+                })
+            },
+            "Отмена": function () {
+                userWordsChageStausDialog.dialog("close");
+            }
+        },
+        close: function () {
+            //userWordsChageStausDialog.find('form').reset();
+            //allFields.removeClass("ui-state-error");
+        }
+        });
+
+    });
+
+  $.jgrid.defaults.responsive = true;
   $(document).ready(function () {
 
       //var mapNames = {
@@ -51,6 +107,11 @@
               $("#SetName").val(value);
           }
       }
+      function datePick(elem) {
+          $(elem).datepicker({
+              dateFormat: "yy-mm-dd HH:mm"
+          });
+      }
 
 
       $("#jqGridUserWords").jqGrid({
@@ -77,10 +138,10 @@
                     { label: "Тип", name: "WordType_Id", hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.WordTypesStr", disabled: "disabled", class: "addOnlyEnabled" } },
                     { label: "Тип", name: "WordTypeName", index: "Word.WordType.Name", width: 70},
 
-                    { label: "Создан", name: "DateTimeCreate" },
+                    { label: "Создан", name: "DateTimeCreate", sorttype: 'date' ,searchoptions: { dataInit: datePick, title: 'Select Date' },  },
                     { label: "tr", name: "Translations" },
                 ],
-                rowList: [25, 50, 75],
+                rowList: [25, 50, 75, 100, 500, 1000, 5000, 10000, 50000, 100000],
 				viewrecords: true,
                 height: 450,
                 rowNum: 20,
@@ -143,6 +204,27 @@
             $("#loadErrors").text("");
         });
 
+      //custom Buttons
+      $('#jqGridUserWords').navButtonAdd('#jqGridUserWordsPager',
+          {
+              buttonicon: "none",
+              title: "Change status",
+              caption: "Status",
+              position: "last",
+              onClickButton: function () {
+
+                  var selectedRows = JqGridExt.GetSelectedRows("#jqGridUserWords");
+
+                  let selectedCount = selectedRows.length;
+
+                  if (selectedCount == 0) {
+                      alert('Не выбраны слова!');
+                      return;
+                  }
+
+                  $("#user-words-chage-staus-dialog").dialog('open');
+              }
+          });
 //----------Autocomplete------------------
       $('#jqGridUserWords').on("jqGridAddEditBeforeShowForm", function (event, form, oper) {
 

@@ -22,6 +22,7 @@ namespace cshh.Model.Services.Polyglot
         void Delete(int id);
         void Edit(UserWord userWord);
         string GetWordTranslates(string word, string appUserId);
+        void ChangeWordsStatus(int status_Id, int[] words);
 
     }
     public class UserWordsService : IUserWordsService
@@ -176,7 +177,7 @@ namespace cshh.Model.Services.Polyglot
                 );
         }
 
-        bool IsUserWordOwning(int userWordId, string appUserId)
+        bool IsUserWordOwning(int userWordId, string appUserId)//todo for words array 
         {
             return Repository.UserWords.Any(uw => uw.Id == userWordId && uw.Set.User.ApplicationUserId == appUserId);
         }
@@ -206,6 +207,22 @@ namespace cshh.Model.Services.Polyglot
             }
 
             return result;
+        }
+        public void ChangeWordsStatus(int status_Id, int[] words)
+        {
+            string userAppId = _workContext.UserAppId;
+
+            foreach(int wordId in words)
+            {
+                if(!IsUserWordOwning(wordId, userAppId))
+                    throw new Exception($"not your word: {wordId} ");
+
+                var word = Repository.GetByKey<UserWord>(wordId);
+                word.Status_Id = status_Id;
+                Repository.Update(word);
+            }
+
+            Repository.Save();            
         }
     }
 }

@@ -3,11 +3,10 @@
 <div id="train-write-from-translate-vue">
 
     <div v-show="current">
-        <div>Перевод: <b>{{translations}}</b></div>
+        <div v-bind:title="word">Перевод: <b>{{translations}}</b></div>
         <div v-show="!isCorrect" class="text-error">Неверно</div>
         <div v-show="isCorrect" class="text-positive">Верно</div>
         <input type="text" v-model="entered" v-on:keyup.enter="next" />
-
     </div>
     <button v-on:click="next">Дальше</button>
     <div v-show="!current">
@@ -22,8 +21,8 @@
 </div>
 
 
-
 <script>
+    //todo add reset statisticObject
     $(function () {
         let trainWriteFromTranslateApp = new Vue({
 
@@ -31,9 +30,9 @@
             methods: {
                 next: function () {
                     this.entered = "";
-                    this.current = wordSelector.getWord();
+                    this.current = wordSelectorVue.getWord();
                     if (this.current && !this.current.Translations)
-                        this.current.Translations = this.current.WordText+ " - нет перевода.";
+                        this.current.Translations = this.current.WordText + " - нет перевода.";
                 }
             },
             data: {
@@ -42,26 +41,18 @@
             },
             computed: {
                 isCorrect: function () {
-                    return this.current && this.entered.trim() == this.current.WordText;
+                    return this.current && this.entered.trim().toLowerCase() == this.current.WordText.toLowerCase();
                 },
                 translations: function () {
                     return this.current ? this.current.Translations : null;
+                },
+                word: function () {
+                    return this.current ? this.current.WordText : null;
                 }
             }
 
         });
 
     });
-
-
-        //let trainWriteFromTranslate = {
-        //    currentWord: null,
-        //    next: function () {
-        //        currentWord = wordSelector.getWord();
-        //        if (currentWord)
-        //            $('#train-write-from-translate-translations').text(word.Translations);
-        //    }
-        //}
-
 
 </script>

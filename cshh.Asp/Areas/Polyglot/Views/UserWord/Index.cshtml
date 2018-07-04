@@ -2,11 +2,15 @@
 <div>
     @JqGrid.JqGridBundles()
     @Html.Action("JqGridEditList", "UserWord", new { area = "polyglot" })
-
+    <hr />
     <div id="trains-container">
-        <h3>Упражнения</h3>
+        <h5>Упражнения</h5>
         @*<button onclick="selectWords()">Выбрать слова</button>*@
         <div id="trains-tab-menu">
+            <span id="wordSelectorVue" v-bind:class="[currentCount>1?'wordSelectorVueInfoComplete':'wordSelectorVueInfoUnComplete']">
+                <span><span title="Пройдено слов">{{trainedCount}}</span>/<span title="Всего слов">{{selectedCount}}</span><span title="Круг">({{currentCount}})</span></span>
+                <a class="fa fa-sync-alt" v-on:click.prevent="dropStatistic" href="" title="Сброс"></a>
+            </span>
             <a href="#write-from-translate">Перевод -> Оригинал</a> |
             <a href="#remeber-translate">Вспомнить перевод</a> |
         </div>
@@ -19,55 +23,96 @@
         </div>
     </div>
 </div>
+@section styles{
 
-
-@section scripts{
-    <script src="~/Scripts/vue.js"></script>
-    <script>
-        let wordSelector = {
-            statisticObj: {},
-            getWord: function () {
-                let statisticObj = this.statisticObj;//for capture
-
-                var selectedRows = JqGridExt.GetSelectedRows("#jqGridUserWords");
-
-                let selectedCount = selectedRows.length;
-
-                if (selectedCount == 0) {
-                    alert('Не выбраны слова!');
-                    return;
-                }
-
-                let randomIndex = Math.round(Math.random() * (selectedCount - 1));
-
-                let randomWord = selectedRows[randomIndex];
-                let resultWord = randomWord;
-                let allreadySelected = statisticObj[resultWord.WordText];
-
-                if (allreadySelected) {
-
-                    let smallerFinded = selectedRows.find(function (r) {
-                        return ((statisticObj[r.WordText] ? statisticObj[r.WordText].count : 0) < allreadySelected.count)
-                    });
-
-                    if (smallerFinded) {
-                        resultWord = smallerFinded;
-                    }
-                }
-
-                let existStatistic = this.statisticObj[resultWord.WordText];
-                if (existStatistic)
-                    existStatistic.count++
-                else
-                    this.statisticObj[resultWord.WordText] = { word: resultWord, count: 1 };
-
-                return resultWord;
-            },
-            reset: function () {
-                statisticObj = {};
-            }
+    <style>
+        .wordSelectorVueInfoComplete {
+            background-color: lawngreen;
         }
 
+        .wordSelectorVueInfoUnComplete {
+            background-color: linen;
+        }
+
+        #wordSelectorVue {
+            border: 2px solid grey;
+            padding: 2px;
+            margin: 1px;
+            display: inline-block;
+            box-shadow: 2px 2px darkgrey;
+            border-style: dashed dotted double groove hidden inset outset ridge solid unset
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jquery-ui")
+    <script src="~/Scripts/vue.js"></script>
+    <script>
+
+        let wordSelectorVue = new Vue({
+            el: "#wordSelectorVue",
+            data: {
+                statisticObj: {},
+                selectedCount: 0,
+                trainedCount: 0,
+                currentWord: {},
+            },
+            methods: {
+                dropStatistic: function () {
+                    this.statisticObj = {};
+                    this.trainedCount = 0;
+                    this.selectedCount = 0;
+                    this.currentWord = {};
+                    this.selectedCount = 0;
+                },
+                getWord: function () {
+                    let statisticObj = this.statisticObj;//for capture
+
+                    var selectedRows = JqGridExt.GetSelectedRows("#jqGridUserWords");
+                    this.selectedCount = selectedRows.length;
+
+                    if (this.selectedCount == 0) {
+                        alert('Не выбраны слова!');
+                        return;
+                    }
+
+                    let randomIndex = Math.round(Math.random() * (this.selectedCount - 1));
+
+                    let randomWord = selectedRows[randomIndex];
+                    let resultWord = randomWord;
+                    let allreadySelected = statisticObj[resultWord.WordText];
+
+                    if (allreadySelected) {
+
+                        let smallerFinded = selectedRows.find(function (r) {
+                            return ((statisticObj[r.WordText] ? statisticObj[r.WordText].count : 0) < allreadySelected.count)
+                        });
+
+                        if (smallerFinded) {
+                            resultWord = smallerFinded;
+                        }
+                    }
+
+                    let existStatistic = this.statisticObj[resultWord.WordText];
+                    if (existStatistic)
+                        existStatistic.count++
+                    else
+                        this.statisticObj[resultWord.WordText] = { word: resultWord, count: 1 };
+
+                    this.currentWord = this.statisticObj[resultWord.WordText];
+                    let trainedCountTotal = Object.keys(this.statisticObj).map(function (key) { return statisticObj[key].count }).reduce(function (prev, curr) { return prev += curr });
+                    console.log("total: " + trainedCountTotal + " currentCount: " + this.currentCount + " selectedCount " + this.selectedCount )
+                    this.trainedCount = trainedCountTotal > this.selectedCount ? (trainedCountTotal % this.selectedCount) || this.selectedCount : trainedCountTotal;
+                    return resultWord;
+                }
+            },
+            computed: {
+                currentCount: function () {
+                    return this.currentWord.count || 0;
+                }
+            }
+        });
     </script>
 
 }

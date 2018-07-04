@@ -101,7 +101,15 @@
                 completeAddWordAjax();
             }
 
-            xhr.send();
+            try {
+                xhr.send();
+            }
+            catch (ex) {
+                alert(JSON.stringify(ex));
+                failAddWordAjax("Попробуйте через кнопку на панели.(https?)")
+                completeAddWordAjax();
+            }
+
         }
         function failAddWordAjax(err) {
             log("Error: " + err, true);

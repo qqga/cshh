@@ -71,6 +71,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             var jqGrid_WordEditLists = new JqGrid_WordEditLists()
             {
                 LanguagesStr = _PolyglotListsService.GetLanguaches().ToSelectListStr(t => t.Id, t => t.Name),
+                Statuses = _PolyglotListsService.GetWordStatuses().ToSeletListItems(s => s.Name, s => s.Id, 1),
                 StatusesStr = _PolyglotListsService.GetWordStatuses().ToSelectListStr(t => t.Id, t => t.Name),
                 WordTypesStr = _PolyglotListsService.GetWordTypes().ToSelectListStr(t => t.Id, t => t.Name),
                 WordSets = _wordsService.GetUserWordsSets(this.GetAppUserId()).Select(t => t.Name),
@@ -136,6 +137,20 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             return null;
         }
 
+        [Authorize]
+        public string ChangeWordsStatus(int status_Id, int[] words)
+        {
+            try
+            {
+                _wordsService.ChangeWordsStatus(status_Id, words);
+            }
+            catch(Exception ex)
+            {
+                return this.BadRequestAndCollectEx(ex);
+            }
+
+            return "Ok";
+        }
 
         #endregion
 
@@ -291,6 +306,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
 
             public IEnumerable<string> WordSets { get; set; }
             public string WordSetsStr { get; set; }//=> string.Join("; ", WordSets.Select(ws => $"{ws.Id}:{ws.Name}"));
+            public IEnumerable<SelectListItem> Statuses { get; set; }
             public string StatusesStr { get; set; }//=> string.Join("; ", Statuses.Select(s => $"{s.Id}:{s.Name}"));
             public string LanguagesStr { get; set; }// => string.Join("; ", Languages.Select(l => $"{l.Id}:{l.Name}"));
             public string WordTypesStr { get; set; }// => string.Join("; ", WordTypes.Select(wt => $"{wt.Id}:{wt.Name}"));
