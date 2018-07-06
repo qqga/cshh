@@ -1,0 +1,45 @@
+﻿
+#clockDisplay {
+    border: 6px ridge;
+    width: 220px;
+    margin: auto;
+    /*padding: 0px 10px 0px 10px;*/
+    background-color: black;
+    text-align: center;
+    cursor: cell;
+    /*-webkit-animation: backColorMove 10000ms infinite alternate;*/
+    animation: convulsion 1000ms infinite, backColorMove 10000ms infinite;
+    transform: rotateZ(-2deg);
+    line-height: 1;
+}
+
+@keyframes convulsion {
+50%{transform: rotateZ(2deg);}
+}
+
+@keyframes backColorMove {
+    50% {background-color: #770000;}
+}
+/*@-webkit-keyframes backColorMove{
+    50% {background-color: #770000;}
+}*/
+
+#timeDisplay {
+    font-family: "Agency FB";
+    font-size: 55px;
+    font-weight: 700;
+    color: #F40000;
+}
+
+#dateDisplay {
+    font-family: Andalus;
+    font-size: 16pt;
+    font-weight: 700;
+    text-decoration: underline;
+    color: #A80000;
+}
+
+/*table, td, tr {
+    border:3px solid;
+    border-color:orange;
+}*/

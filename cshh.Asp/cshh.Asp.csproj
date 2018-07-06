@@ -771,6 +771,7 @@
     <Content Include="Content\themes\vader\jquery-ui.css" />
     <Content Include="Content\themes\vader\jquery-ui.min.css" />
     <Content Include="Content\themes\vader\theme.css" />
+    <Content Include="Content\time.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -889,6 +890,7 @@
     <Content Include="Scripts\React\build\book.bundle.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\time.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />

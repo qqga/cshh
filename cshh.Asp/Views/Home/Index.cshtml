@@ -3,10 +3,14 @@
     //Layout = null;
 }
 
-<div class="jumbotron">
-    
-   
-    @if(User.Identity.IsAuthenticated)
+<div class="jumbotron" style="padding:1rem;">
+
+    <div id="clockDisplay" style="">
+        <div id="dateDisplay">15.03.2015</div>
+        <div id="timeDisplay">10:11:11</div>
+    </div>
+
+    @if (User.Identity.IsAuthenticated)
     {
 
 
@@ -16,6 +20,13 @@
     }
 
 </div>
+
+@section styles{
+    <link href="~/Content/time.css" rel="stylesheet"/>
+}
+@section scripts{
+    <script src="~/Scripts/time.js"></script>
+}
 
 @*@JqGrid.JqGridBundles()*@
 
@@ -29,4 +40,4 @@
 
 @*@JqGrid.JqGridBundles()
 
-@Html.Action("JqGridEditList", "ForeignText", new { area = "polyglot" })*@
+    @Html.Action("JqGridEditList", "ForeignText", new { area = "polyglot" })*@
