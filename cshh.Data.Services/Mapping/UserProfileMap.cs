@@ -20,6 +20,7 @@ namespace cshh.Data.Services.Mapping
             HasMany(u => u.UserWordsSets).WithRequired(uw => uw.User);
             HasMany(u => u.ForeignTexts).WithOptional(t => t.UserProfile).HasForeignKey(t=>t.UserProfile_Id).WillCascadeOnDelete(false);
             HasMany(u => u.Words).WithRequired(w => w.UserProfile).HasForeignKey(w => w.UserProfile_Id).WillCascadeOnDelete(false);
+            HasMany(u => u.Tasks).WithRequired(w => w.UserProfile).HasForeignKey(w => w.UserProfile_Id).WillCascadeOnDelete(true);
         }
     }
 }

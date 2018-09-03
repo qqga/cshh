@@ -10,7 +10,7 @@ namespace cshh.Data.Services
 {
     public static class Init
     {
-        public static void Seed(cshh.Data.Services.DbContexts.PolyglotDbContext context)
+        public static void Seed(cshh.Data.Services.DbContexts.CommonDbContext context)
         {
             context.Languages.AddOrUpdate(l => l.Name
             , new Language() { Name = "English", ShortName = "en" }

@@ -13,17 +13,17 @@ using System.Data.Entity.Core.Objects;
 
 namespace cshh.Data.Services.DbContexts
 {
-    public class PolyglotDbContext : DBContextWithLog
+    public class CommonDbContext : DBContextWithLog
     {
-        static TraceSwitch _PolyglotDbContextSwitch = new TraceSwitch("PolyglotDbContextSwitch", "DbContext Polyglot TraceSwitch");
-        public override TraceSwitch TraceSwitch => _PolyglotDbContextSwitch;
+        static TraceSwitch _CommonDbContextSwitch = new TraceSwitch("CommonDbContextSwitch", "DbContext Common TraceSwitch");
+        public override TraceSwitch TraceSwitch => _CommonDbContextSwitch;
 
-        static PolyglotDbContext()
+        static CommonDbContext()
         {
-            Database.SetInitializer<PolyglotDbContext>(null);
+            Database.SetInitializer<CommonDbContext>(null);
         }
 
-        public PolyglotDbContext(string connectionString) : base(connectionString)
+        public CommonDbContext(string connectionString) : base(connectionString)
         {
 
         }
@@ -35,32 +35,20 @@ namespace cshh.Data.Services.DbContexts
         /// </summary>
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        public PolyglotDbContext() : base()
+        public CommonDbContext() : base()
         {
 
         }
-
+               
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            MapConfiguration(modelBuilder);
-        }
 
-        internal static void MapConfiguration(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Configurations.Add(new Mapping.UserProfileMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.ForeignTextMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.BookmarkMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.LanguageMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.UserWordMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordDefinitionMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordSetMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordStatusMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordTypeMap());
+            PolyglotDbContext.MapConfiguration(modelBuilder);
+            TaskDbContext.MapConfiguration(modelBuilder);
+            
         }
-
         public override int SaveChanges()
         {
             //var entries = this.ChangeTracker.Entries();
@@ -68,6 +56,9 @@ namespace cshh.Data.Services.DbContexts
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
+
+
+        #region Polyglot
         public DbSet<Word> Words { get; set; }
         public DbSet<ForeignText> ForeignTexts { get; set; }
         public DbSet<Bookmark> Bookmarks { get; set; }
@@ -77,7 +68,13 @@ namespace cshh.Data.Services.DbContexts
         public DbSet<WordSet> WordSets { get; set; }
         public DbSet<WordStatus> WordStatuses { get; set; }
         public DbSet<WordType> WordTypes { get; set; }
+        #endregion
 
+
+        #region Tasks
+        public DbSet<cshh.Data.Tasks.Task> Tasks { get; set; }
+
+        #endregion
 
     }
 }

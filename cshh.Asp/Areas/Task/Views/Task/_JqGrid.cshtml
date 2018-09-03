@@ -1,0 +1,255 @@
+﻿@model cshh.Data.Tasks.Task
+
+<div style="margin-left:20px">
+    <div id="loadErrors" class="text-danger"></div>
+    <table id="jqGridTasks"></table>
+    <div id="jqGridTasksPager"></div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $.jgrid.defaults.responsive = true;
+        var jqgWidth = 780;
+
+        function datePick(elem) {
+            $(elem).datepicker({
+                dateFormat: "yy-mm-dd HH:mm"
+            });
+        }
+
+        var template =
+            "<div style='margin-left:15px;'><div> Id <sup>*</sup>:<span> {Id} </span></div>" +
+            "<div> Создан: <span>{CreatedDTStr} </span></div>" +
+            "<div> Название: </div><div>{Name} </div>" +
+            "<div> Описание: </div><div>{Description} </div>" +
+            "<div> Завершен: <span>{IsComplited} </span></div>" +
+            "<div> Дата: </div><div>{TargetDTStr} </div>" +
+            "<div> Период: </div><div>{RemindPeriodStr} </div>" +
+            "<hr />" +
+            "<div id = 'additionFormContainer'></div>" +
+            "<div> {sData} {cData}  </div></div>";
+
+
+
+        $("#jqGridTasks").jqGrid({
+            url: "@Url.Action("JqGridList", "Task", new {area = "task" })",
+            mtype: "GET",
+            //styleUI : "Bootstrap",
+            datatype: "json",
+            colModel: [
+                { label: "Id", name: "Id", hidden: true, editable: true, key: true, searchtype: 'integer', width: 50, editoptions: { disabled: "disabled" } },
+                { label: "Создан", name: "CreatedDTStr", editable: true, editoptions: { disabled: "disabled" }   },
+                { label: "Название", name: "Name", editable: true },
+                { label: "Описание", name: "Description", hidden: true, editable: true, edittype: "textarea", editoptions: { rows: "20", cols: "60" } },
+                { label: "Дата", name: "TargetDTStr", editable: true, sorttype: 'date', searchoptions: { dataInit: datePick, title: 'Select Date' }, },                
+                { label: "Период", name: "RemindPeriodStr", editable: true,},
+                { label: "Завершен", name: "IsComplited", editable: true, edittype: "checkbox", editoptions: { value: "true:false" }, formatter: 'checkbox'},
+            ],
+            rowList: [25, 50, 75],
+            viewrecords: true,
+            height: 450,
+            rowNum: 20,
+            width: jqgWidth,
+            pager: "#jqGridTasksPager",
+
+            //subGrid: true,
+            //subGridRowExpanded: showChildGrid,
+
+                @*editurl: "@Url.Action("JqEdit", "word", new { area = "polyglot" })",
+                edit: { closeAfterEdit: true },*@
+
+            subGrid: true,
+            subGridRowExpanded: showChildGrid,
+
+
+        });
+        //$('#jqGrid').jqGrid('filterToolbar');
+
+
+
+        $('#jqGridTasks').navGrid('#jqGridTasksPager',
+            // the buttons to appear on the toolbar of the grid
+            { edit: true, add: true, del: true, search: true, refresh: true, view: true, position: "left", cloneToTop: true },
+            // options for the Edit Dialog
+            {
+                editCaption: "Редакирование",
+                template: template,
+                errorTextFormat: function (data) {
+                    return 'Ошибка ребактирования: ' + data.responseText
+                },
+                //afterSubmit: afterSubmitEdit,
+                closeAfterEdit: true,
+                url: "@Url.Action("JqGridEdit", "Task", new { area = "task" })"
+            },
+            // options for the Add Dialog
+            {
+                template: template,
+                errorTextFormat: function (data) {
+                    return 'Ошибка добавления: ' + data.responseText
+                },
+                closeAfterAdd: true,
+                url: "@Url.Action("JqGridAdd", "Task", new { area = "task" })",
+            },
+            // options for the Delete Dailog
+            {
+                errorTextFormat: function (data) {
+                    return 'Ошибка удления: ' + data.responseText
+                },
+                url: "@Url.Action("JqGridDelete", "Task", new { area = "task" })",
+            },
+            {
+                multipleSearch: true,
+            }
+        );
+
+
+       @*$('#jqGridTexts').navButtonAdd('#jqGridTextsPager',
+          {
+              buttonicon: "none",
+              title: "View",
+              caption: "View",
+              position: "last",
+              onClickButton: function () {
+
+                  let textId = getTextId();
+
+                  if (textId)
+                      document.location.assign("@Url.Action("Read", "ForeignText")" + "?id=" + textId);
+                  else
+                      $.jgrid.info_dialog("Внимание","Пожалуйста, выберите запись");
+              }
+          });*@
+
+
+        $('#jqGridTasks').on("jqGridLoadError", function (event, xhr, status, error) {
+            $("#loadErrors").text(error);
+        });
+
+        $('#jqGridTasks').on("jqGridLoadComplete", function (event, data) {
+            $("#loadErrors").text("");
+        });
+
+        function getTextId() {
+
+            let grid = $('#jqGridTasks'),
+                selectedRowId = grid.jqGrid('getGridParam', 'selrow'),
+                textId = grid.jqGrid('getCell', selectedRowId, 'Id');
+
+            return textId;
+        }
+
+
+        //child grid
+        function showChildGrid(parentRowID, parentRowKey) {
+
+            let taskId = $("#jqGridTasks").jqGrid("getCell", parentRowKey,"Id");
+
+            //$('#' + parentRowID).append("<ul><li><a href='#tab-translations'>Перевод</a></li><li><a href='#tab-defenitions'>Примеры</a></li></ul>");
+            
+            showChildGridTasks(parentRowID, parentRowKey, taskId);
+
+            $('#' + parentRowID).tabs();
+        }
+
+        function showChildGridTasks(parentRowID, parentRowKey) {
+
+            var template = "<div style='margin-left:15px;'><div> Id <sup>*</sup>:<span> {Id} </span></div>" +
+                "<div> Создан: <span>{CreatedDTStr} </span></div>" +
+                "<div> Название: </div><div>{Name} </div>" +
+                "<div> Описание: </div><div>{Description} </div>" +
+                "<div> Завершен: <span>{IsComplited} </span></div>" +
+                "<div> Дата: </div><div>{TargetDTStr} </div>" +
+                "<div> Период: </div><div>{RemindPeriodStr} </div>" +
+                "<hr />" +
+                "<div id = 'additionFormContainer'></div>" +
+                "<div> {sData} {cData}  </div></div>";
+
+
+            var childGridID = parentRowID + "_tableSubTasks";
+            var childGridPagerID = parentRowID + "_pagerSubTasks";
+
+            // send the parent row primary key to the server so that we know which grid to show
+            var childGridURL = "@Url.Action("JqGridListSubTasks", "Task",new {area = "Task"})" + "?SupTaskId="+parentRowKey; //parentRowKey + ".json";
+            //childGridURL = childGridURL + "&parentRowID=" + encodeURIComponent(parentRowKey)
+
+            // add a table and pager HTML elements to the parent grid row - we will render the child grid here
+            $('#' + parentRowID).append('<div ><div id = "loadErrorsSubTask" class="text-danger"></div><table id=' + childGridID + '></table><div id=' + childGridPagerID + ' class=scroll></div></div>');
+
+            $("#" + childGridID).jqGrid({
+                url: childGridURL,
+                mtype: "GET",
+                //styleUI: "Bootstrap",
+                datatype: "json",
+                page: 1,
+                colModel: [
+                    { label: "Id", name: "Id", hidden: true, editable: true, key: true, searchtype: 'integer', width: 50, editoptions: { disabled: "disabled" } },
+                    { label: "Создан", name: "CreatedDTStr", editable: true, editoptions: { disabled: "disabled" }   },
+                    { label: "Название", name: "Name", editable: true },
+                    { label: "Описание", name: "Description", hidden: true, editable: true, edittype: "textarea", editoptions: { rows: "20", cols: "60" } },
+                    { label: "Дата", name: "TargetDTStr", editable: true, sorttype: 'date', searchoptions: { dataInit: datePick, title: 'Select Date' }, },                
+                    { label: "Период", name: "RemindPeriodStr", editable: true,},
+                    { label: "Завершен", name: "IsComplited", editable: true, edittype: "checkbox", editoptions: { value: "true:false" }, formatter: 'checkbox'},
+                ],
+                //loadonce: true,
+                width: jqgWidth-100,
+                height: '100%',
+                pager: "#" + childGridPagerID
+            });
+
+
+            $('#' + childGridID).navGrid('#' + childGridPagerID,
+            // the buttons to appear on the toolbar of the grid
+            { edit: true, add: true, del: true, search: true, refresh: true, view: true, position: "left", cloneToTop: false },
+            // options for the Edit Dialog
+            {
+                editCaption: "Редакирование",
+                template: template,
+                errorTextFormat: function (data) {
+                    return 'Ошибка ребактирования: ' + data.responseText
+                },
+                //afterSubmit: afterSubmitEdit,
+                closeAfterEdit: true,
+                url: "@Url.Action("JqGridEdit", "Task", new { area = "task" })" //+ "?id=" + parentRowKey
+            },
+            // options for the Add Dialog
+            {
+                template: template,
+                errorTextFormat: function (data) {
+                    return 'Ошибка добавления: ' + data.responseText
+                },
+                closeAfterAdd: true,
+                url: "@Url.Action("JqGridAdd", "Task", new { area = "task" })" + "?SupTaskId=" + parentRowKey
+            },
+            // options for the Delete Dailog
+            {
+                errorTextFormat: function (data) {
+                    return 'Ошибка удления: ' + data.responseText
+                },
+                url: "@Url.Action("JqGridDelete", "Task", new { area = "task" })" + "?SupTaskId=" + parentRowKey
+            },
+            {
+                multipleSearch: true,
+            });
+
+            @*$("#" + childGridID).on("jqGridAddEditBeforeShowForm", function (event, form, oper) {
+
+                var inputText$ = form.find("input[name='Text']");
+                inputText$.autocomplete({
+                        source: "@Url.Action("WordsLike", "Word")",
+                        minLength: 2
+                });
+            });*@
+
+            $("#" + childGridID).on("jqGridLoadError", function (event, xhr, status, error) {
+                $("#loadErrorsSubTask").text(error);
+            });
+
+            $("#" + childGridID).on("jqGridLoadComplete", function (event, data) {
+                $("#loadErrorsSubTask").text("");
+            });
+        }
+
+
+    });
+</script>
+

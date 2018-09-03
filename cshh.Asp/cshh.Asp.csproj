@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>cshh.Asp</RootNamespace>
     <AssemblyName>cshh.Asp</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -28,6 +28,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,8 +71,8 @@
     <Reference Include="JSPool, Version=3.0.1.0, Culture=neutral, PublicKeyToken=2fc7775f73072640, processorArchitecture=MSIL">
       <HintPath>..\packages\JSPool.3.0.1\lib\net451\JSPool.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MsieJavaScriptEngine, Version=2.2.2.0, Culture=neutral, PublicKeyToken=a3a2846a37ac0d3e, processorArchitecture=MSIL">
@@ -91,6 +92,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
@@ -101,11 +103,8 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -147,6 +146,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
     </Reference>
@@ -276,6 +276,9 @@
     <Compile Include="Areas\Polyglot\Models\UserWordsListViewModel.cs" />
     <Compile Include="Areas\Polyglot\Models\WordEditViewModel.cs" />
     <Compile Include="Areas\Polyglot\PolyglotAreaRegistration.cs" />
+    <Compile Include="Areas\Task\Controllers\TaskController.cs" />
+    <Compile Include="Areas\Task\Models\TaskVM.cs" />
+    <Compile Include="Areas\Task\TaskAreaRegistration.cs" />
     <Compile Include="Common\Asp\JqGrid\Enums.cs" />
     <Compile Include="Common\Asp\JqGrid\Search\Filter.cs" />
     <Compile Include="Common\Linq\IQueryableExt.cs" />
@@ -289,16 +292,27 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Extensions\Controller\ModelStateExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\JsonTypeContractResolver.cs" />
     <Compile Include="Extensions\View\HtmlExtensions.cs" />
     <Compile Include="Extensions\View\SelectListItemExtnesions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\TaskClientInfo.cs">
+      <DependentUpon>TaskHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\TaskClientsContainer.cs">
+      <DependentUpon>TaskHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\TaskHandler.ashx.cs">
+      <DependentUpon>TaskHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Roles.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Common\JqGridHelper.cs" />
     <Compile Include="Models\Common\ValidationDictionary.cs" />
     <Compile Include="Models\Common\WorkContext.cs" />
+    <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -313,6 +327,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\arrowclockface.png" />
     <Content Include="Content\images\ForeignText\1.jpg" />
     <Content Include="Content\images\ForeignText\2.jpg" />
     <Content Include="Content\images\ui-bg_diamond_10_4f4221_10x8.png" />
@@ -771,6 +786,7 @@
     <Content Include="Content\themes\vader\jquery-ui.css" />
     <Content Include="Content\themes\vader\jquery-ui.min.css" />
     <Content Include="Content\themes\vader\theme.css" />
+    <Content Include="Scripts\time-arrow.js" />
     <Content Include="Content\time.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -848,6 +864,11 @@
     <Content Include="Areas\Polyglot\Views\UserWord\AddWordExt.cshtml" />
     <Content Include="Areas\Polyglot\Views\UserWord\Train\_WriteFromTranslate.cshtml" />
     <Content Include="Areas\Polyglot\Views\UserWord\Train\_RememberTranslate.cshtml" />
+    <Content Include="Handlers\TaskHandler.ashx" />
+    <Content Include="Areas\Task\Views\web.config" />
+    <Content Include="Areas\Task\Views\Task\Index.cshtml" />
+    <Content Include="Areas\Task\Views\Task\_JqGrid.cshtml" />
+    <Content Include="Areas\Task\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\fozzy profile.pubxml" />
@@ -950,6 +971,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Polyglot\Views\Shared\" />
     <Folder Include="Areas\Polyglot\Views\Word\" />
+    <Folder Include="Areas\Task\Views\Shared\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -967,6 +989,10 @@
     <ProjectReference Include="..\cshh.Model.Services\cshh.Model.Services.csproj">
       <Project>{25753865-9c9d-4004-acdf-e808c30e87c2}</Project>
       <Name>cshh.Model.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaskLib\TaskLib\TaskLib.csproj">
+      <Project>{ddeb8eb2-dc92-4a84-876a-42583faeca76}</Project>
+      <Name>TaskLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -1008,8 +1034,8 @@
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>cshh.Data</RootNamespace>
     <AssemblyName>cshh.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,10 +52,17 @@
     <Compile Include="Polyglot\WordStatus.cs" />
     <Compile Include="Polyglot\WordType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\Task.cs" />
     <Compile Include="User\UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Polyglot\ClassDiagramPolyglot.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaskLib\TaskLib\TaskLib.csproj">
+      <Project>{ddeb8eb2-dc92-4a84-876a-42583faeca76}</Project>
+      <Name>TaskLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

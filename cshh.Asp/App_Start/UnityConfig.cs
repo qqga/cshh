@@ -3,6 +3,7 @@ using cshh.Data.Polyglot;
 using cshh.Data.Services.DbContexts;
 using cshh.Data.Services.Repo;
 using cshh.Model.Services.Polyglot;
+using cshh.Model.Services.Tasks;
 using cshh.Model.Services.User;
 using System;
 using Unity;
@@ -52,10 +53,14 @@ namespace cshh.Asp
             #region Repository
             container.RegisterType<IUserRepository, PolyglotEfRepository>();
             container.RegisterType<IPolyglotRepository, PolyglotEfRepository>();
+            container.RegisterType<ITaskRepository, TaskEfRepository>();
 
             container.RegisterType<PolyglotDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
                 new InjectionFactory(c => new PolyglotDbContext("cshhConnection")));
             //container.RegisterSingleton<PolyglotDbContext>(new InjectionFactory(c=> new PolyglotDbContext("cshhConnection") ));
+
+            container.RegisterType<TaskDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
+                new InjectionFactory(c => new TaskDbContext("cshhConnection")));
 
             #endregion
 
@@ -66,6 +71,8 @@ namespace cshh.Asp
             container.RegisterType<IWordDefinitionService, WordDefinitionService>();
             container.RegisterType<IPolyglotListsService, PolyglotListsService>();
             container.RegisterType<IForeignTextService, ForeignTextService>();
+
+            container.RegisterType<ITaskService, TaskService>();
 
             #endregion
 

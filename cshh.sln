@@ -47,6 +47,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IE", "IE", "{9F65D97C-D8DC-
 		BrowserExt\IE\CshhPolyglotIeExtension.xml = BrowserExt\IE\CshhPolyglotIeExtension.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaskLib", "TaskLib", "{4CEC0D19-74AB-4C70-A7D0-0AC261CE1901}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskLib", "TaskLib\TaskLib\TaskLib.csproj", "{DDEB8EB2-DC92-4A84-876A-42583FAECA76}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{ACF69D50-0FCC-463C-9290-1DDFB3E45BA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACF69D50-0FCC-463C-9290-1DDFB3E45BA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACF69D50-0FCC-463C-9290-1DDFB3E45BA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDEB8EB2-DC92-4A84-876A-42583FAECA76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDEB8EB2-DC92-4A84-876A-42583FAECA76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDEB8EB2-DC92-4A84-876A-42583FAECA76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDEB8EB2-DC92-4A84-876A-42583FAECA76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +94,7 @@ Global
 		{0310B336-772E-47DA-8FD9-CE975639440A} = {692B7D48-46C4-4231-BA14-4FE77D596DA0}
 		{E1C4D4EC-6183-405E-9711-B5473B6A87E2} = {0310B336-772E-47DA-8FD9-CE975639440A}
 		{9F65D97C-D8DC-490F-83ED-88E436C5B11A} = {692B7D48-46C4-4231-BA14-4FE77D596DA0}
+		{DDEB8EB2-DC92-4A84-876A-42583FAECA76} = {4CEC0D19-74AB-4C70-A7D0-0AC261CE1901}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {20BCDF35-0BC1-4372-A204-045015A153BC}

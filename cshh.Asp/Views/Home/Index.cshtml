@@ -9,8 +9,10 @@
         <div id="dateDisplay">15.03.2015</div>
         <div id="timeDisplay">10:11:11</div>
     </div>
+    <div id="arrowTime" style="width:200px; margin:auto;">
 
-    @if (User.Identity.IsAuthenticated)
+    </div>
+    @if(User.Identity.IsAuthenticated)
     {
 
 
@@ -22,10 +24,19 @@
 </div>
 
 @section styles{
-    <link href="~/Content/time.css" rel="stylesheet"/>
+    <link href="~/Content/time.css" rel="stylesheet" />
 }
 @section scripts{
     <script src="~/Scripts/time.js"></script>
+
+    <script src="~/Scripts/time-arrow.js"></script>
+    <script>
+        let clock = new ArrowClock(
+            'arrowTime',
+            180, 20,
+            '@Url.Content("~/Content/images/arrowclockface.png")');
+        clock.draw();
+    </script>
 }
 
 @*@JqGrid.JqGridBundles()*@

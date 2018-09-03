@@ -11,8 +11,9 @@ namespace cshh.Data.User
     public class UserProfile : BaseEntity
     {
         public string ApplicationUserId { get; set; }
-        
-        public virtual ICollection<ForeignText> ForeignTexts { get; set; }     
+
+        public virtual ICollection<ForeignText> ForeignTexts { get; set; }
+        public virtual ICollection<Tasks.Task> Tasks { get; set; }
         public virtual ICollection<WordSet> UserWordsSets { get; set; }
         public virtual ICollection<Word> Words { get; set; }
         public virtual ICollection<WordDefinition> WordDefinitions { get; set; }
