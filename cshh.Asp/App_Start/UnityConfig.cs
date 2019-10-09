@@ -5,7 +5,9 @@ using cshh.Data.Services.Repo;
 using cshh.Model.Services.Polyglot;
 using cshh.Model.Services.Tasks;
 using cshh.Model.Services.User;
+using cshh.Model.Services.Viber;
 using System;
+using System.Web.Configuration;
 using Unity;
 using Unity.Injection;
 
@@ -50,10 +52,14 @@ namespace cshh.Asp
 
             //System.Web.Mvc.ModelBinders.Binders.DefaultBinder = new Common.Asp.ModelBinder.DIModelBinder();
 
+
+            var appSettingsEncryptedSection = WebConfigurationManager.GetSection("appSettingsEncrypted") as System.Collections.Specialized.NameValueCollection;
+
             #region Repository
             container.RegisterType<IUserRepository, PolyglotEfRepository>();
             container.RegisterType<IPolyglotRepository, PolyglotEfRepository>();
             container.RegisterType<ITaskRepository, TaskEfRepository>();
+            container.RegisterType<IViberRepository, ViberEfRepository>();
 
             container.RegisterType<PolyglotDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
                 new InjectionFactory(c => new PolyglotDbContext("cshhConnection")));
@@ -61,6 +67,9 @@ namespace cshh.Asp
 
             container.RegisterType<TaskDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
                 new InjectionFactory(c => new TaskDbContext("cshhConnection")));
+
+            container.RegisterType<ViberDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
+                new InjectionFactory(c => new ViberDbContext("cshhConnection")));
 
             #endregion
 
@@ -73,6 +82,10 @@ namespace cshh.Asp
             container.RegisterType<IForeignTextService, ForeignTextService>();
 
             container.RegisterType<ITaskService, TaskService>();
+
+            container.RegisterType<ViberBot.ViberBotClient>(new InjectionFactory(s => new ViberBot.ViberBotClient(appSettingsEncryptedSection["ViberToken"])));                
+            container.RegisterType<IViberBot, Models.Viber.ViberBotAdapter>();
+            container.RegisterType<IViberService, ViberService>();
 
             #endregion
 

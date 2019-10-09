@@ -20,7 +20,7 @@ namespace cshh.Asp
 
             if(!HostingEnvironment.IsDevelopmentEnvironment)
             {
-                EncryptConnectionString();
+                EncryptSections("connectionStrings", "appSettingsEncrypted");
             }
             
 
@@ -32,18 +32,21 @@ namespace cshh.Asp
         }
 
         //[Conditional("ENCRYPT")]
-        public void EncryptConnectionString()
+        public void EncryptSections(params string[] sectionsNames)
         {
            
             Configuration config = WebConfigurationManager.OpenWebConfiguration("/"); // try it if some issue "/" or HttpContext.Current.Request.ApplicationPath
-            ConfigurationSection section = config.GetSection("connectionStrings");
-            if(!section.SectionInformation.IsProtected)
-            {
-                section.SectionInformation.ProtectSection("DataProtectionConfigurationProvider");//RsaProtectedConfigurationProvider
-                config.Save();
-            }
-        }
 
+            foreach(string sectionName in sectionsNames)
+            {
+                ConfigurationSection section = config.GetSection(sectionName);
+                if(!section.SectionInformation.IsProtected)
+                {
+                    section.SectionInformation.ProtectSection("DataProtectionConfigurationProvider");//RsaProtectedConfigurationProvider
+                    config.Save();
+                }
+            }
+        }      
     }
 
 }

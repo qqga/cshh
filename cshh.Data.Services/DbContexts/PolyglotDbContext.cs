@@ -58,7 +58,7 @@ namespace cshh.Data.Services.DbContexts
             modelBuilder.Configurations.Add(new Mapping.Polyglot.WordMap());
             modelBuilder.Configurations.Add(new Mapping.Polyglot.WordSetMap());
             modelBuilder.Configurations.Add(new Mapping.Polyglot.WordStatusMap());
-            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordTypeMap());
+            modelBuilder.Configurations.Add(new Mapping.Polyglot.WordTypeMap());           
         }
 
         public override int SaveChanges()

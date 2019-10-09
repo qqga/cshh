@@ -52,6 +52,7 @@
     <Compile Include="DbContexts\LogContext.cs" />
     <Compile Include="DbContexts\CommonDbContext.cs" />
     <Compile Include="DbContexts\PolyglotDbContext.cs" />
+    <Compile Include="DbContexts\ViberDbContext.cs" />
     <Compile Include="DbContexts\TaskDbContext.cs" />
     <Compile Include="Mapping\BaseEntityTypeConfiguration.cs" />
     <Compile Include="Mapping\Polyglot\BookmarkMap.cs" />
@@ -65,10 +66,14 @@
     <Compile Include="Mapping\Polyglot\WordTypeMap.cs" />
     <Compile Include="Mapping\Task\TaskMap.cs" />
     <Compile Include="Mapping\UserProfileMap.cs" />
+    <Compile Include="Mapping\Viber\ViberUserMap.cs" />
+    <Compile Include="Mapping\Viber\ViberEventMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repo\IViberRepository.cs" />
     <Compile Include="Repo\ITaskRepository.cs" />
     <Compile Include="Repo\IUserRepository.cs" />
+    <Compile Include="Repo\ViberEfRepository.cs" />
     <Compile Include="Repo\TaskEfRepository.cs" />
     <Compile Include="Repo\PolyglotEfRepository.cs" />
     <Compile Include="Repo\IPolyglotRepository.cs" />

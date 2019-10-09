@@ -13,19 +13,19 @@ using System.Data.Entity.Core.Objects;
 
 namespace cshh.Data.Services.DbContexts
 {
-    public class TaskDbContext : DBContextWithLog
+    public class ViberDbContext : DBContextWithLog
     {
 
-        static TraceSwitch _PolyglotDbContextSwitch = new TraceSwitch("TaskDbContextSwitch", "DbContext Tasks TraceSwitch");
+        static TraceSwitch _PolyglotDbContextSwitch = new TraceSwitch("ViberDbContextSwitch", "DbContext Viber TraceSwitch");
 
         public override TraceSwitch TraceSwitch => _PolyglotDbContextSwitch;
 
-        static TaskDbContext()
+        static ViberDbContext()
         {
             Database.SetInitializer<TaskDbContext>(null);
         }
 
-        public TaskDbContext(string connectionString) : base(connectionString)
+        public ViberDbContext(string connectionString) : base(connectionString)
         {
 
         }
@@ -37,7 +37,7 @@ namespace cshh.Data.Services.DbContexts
         /// </summary>
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        public TaskDbContext() : base()
+        public ViberDbContext() : base()
         {
 
         }
@@ -50,11 +50,14 @@ namespace cshh.Data.Services.DbContexts
         }
 
         internal static void MapConfiguration(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Configurations.Add(new Mapping.Task.TaskMap());            
+        {            
+            modelBuilder.Configurations.Add(new Mapping.Viber.ViberEventMap());
+            modelBuilder.Configurations.Add(new Mapping.Viber.ViberUserMap());
         }
 
-        public DbSet<cshh.Data.Tasks.Task> Tasks { get; set; }        
+        //public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<cshh.Data.Viber.ViberEvent> ViberEvents { get; set; }
+        public DbSet<cshh.Data.Viber.ViberUser> ViberUsers { get; set; }
 
     }
 

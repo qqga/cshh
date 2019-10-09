@@ -1,0 +1,45 @@
+﻿@model cshh.Asp.Models.Viber.SendMessageViewModel
+@{
+    ViewBag.Title = "Send Msg To Viber";
+    string _userFrom = Model.UsersFrom.FirstOrDefault()?.Name;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using(Ajax.BeginForm(new AjaxOptions { AllowCache = false, Confirm = "Send msg?", OnComplete = "OnCompleteSendViberMsg" }))
+{
+    @Html.AntiForgeryToken();
+
+    <div id="SendMsgErrText"></div>
+    <div>@Html.TextArea("msg")</div>
+    <div>
+        <div>FromId: </div>
+        @Html.ListBox("fromId", Model.UsersFrom.Select((us, i) => new SelectListItem() { Text = $"{us.Name}:{us.ViberId}", Value = us.ViberId, Selected = i == 0 }).ToList())
+        <div>From Name: </div>
+        <input type="text" name="fromName" value="@_userFrom" />
+        <input type="submit" value="Отправить" />
+    </div>
+
+    foreach(var user in Model.UsersTo)
+    {
+        <div>
+            <input type="checkbox" name="users" value="@user.ViberId" id="@user.ViberId">
+            @Html.Label(user.Name)
+        </div>
+    }
+
+}
+
+@section scripts{
+    <script>
+
+        function OnCompleteSendViberMsg(e) {
+            console.debug("OnCompleteSendViberMsg: " + e.responseText);
+            var errInfoNode = $("#SendMsgErrText");
+            errInfoNode.text(e.responseJSON.DateTimeStr + ": " + e.responseJSON.Message);
+            errInfoNode.toggleClass("text-error",e.responseJSON.IsError)            
+        }
+
+    </script>
+
+}

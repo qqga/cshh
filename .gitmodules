@@ -1,3 +1,6 @@
 [submodule "TaskLib"]
 	path = TaskLib
 	url = https://github.com/qqga/TaskLib
+[submodule "ViberBot"]
+	path = ViberBot
+	url = https://github.com/qqga/ViberBot

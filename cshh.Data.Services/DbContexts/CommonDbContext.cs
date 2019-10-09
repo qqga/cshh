@@ -47,7 +47,7 @@ namespace cshh.Data.Services.DbContexts
 
             PolyglotDbContext.MapConfiguration(modelBuilder);
             TaskDbContext.MapConfiguration(modelBuilder);
-            
+            ViberDbContext.MapConfiguration(modelBuilder);
         }
         public override int SaveChanges()
         {
@@ -73,6 +73,13 @@ namespace cshh.Data.Services.DbContexts
 
         #region Tasks
         public DbSet<cshh.Data.Tasks.Task> Tasks { get; set; }
+
+        #endregion
+
+        #region Viber
+
+        public DbSet<cshh.Data.Viber.ViberEvent> ViberEvents { get; set; }
+        public DbSet<cshh.Data.Viber.ViberUser> ViberUsers { get; set; }
 
         #endregion
 

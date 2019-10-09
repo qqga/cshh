@@ -279,6 +279,7 @@
     <Compile Include="Areas\Task\Controllers\TaskController.cs" />
     <Compile Include="Areas\Task\Models\TaskVM.cs" />
     <Compile Include="Areas\Task\TaskAreaRegistration.cs" />
+    <Compile Include="Common\Asp\Ajax\AjaxResponse.cs" />
     <Compile Include="Common\Asp\JqGrid\Enums.cs" />
     <Compile Include="Common\Asp\JqGrid\Search\Filter.cs" />
     <Compile Include="Common\Linq\IQueryableExt.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="Controllers\Base\BaseCshhController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ViberController.cs" />
     <Compile Include="Extensions\Controller\ModelStateExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\JsonTypeContractResolver.cs" />
@@ -315,6 +317,8 @@
     <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Viber\SendMessageViewModel.cs" />
+    <Compile Include="Models\Viber\ViberBotAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -966,6 +970,8 @@
     <Content Include="Views\Shared\DisplayTemplates\ForeignTextReadViewModel.cshtml" />
     <Content Include="Scripts\package.json" />
     <Content Include="Scripts\webpack.config.js" />
+    <Content Include="Views\Viber\Events.cshtml" />
+    <Content Include="Views\Viber\SendMsgForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -978,6 +984,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Source\Repos\ViberBot\ViberBot\ViberBot.csproj">
+      <Project>{a4eb139b-bbbe-47b6-94a9-9455f5e8fbdc}</Project>
+      <Name>ViberBot</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cshh.Data.Services\cshh.Data.Services.csproj">
       <Project>{D418D32E-2771-45F1-9286-2CE44388AAFC}</Project>
       <Name>cshh.Data.Services</Name>

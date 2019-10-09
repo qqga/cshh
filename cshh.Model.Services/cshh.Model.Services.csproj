@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +47,7 @@
     <Compile Include="IValidationDictionary.cs" />
     <Compile Include="IRepoContainer.cs" />
     <Compile Include="IWorkContext.cs" />
+    <Compile Include="JsonConvert.cs" />
     <Compile Include="Polyglot\WordCounter.cs" />
     <Compile Include="Polyglot\ForeignTexServies.cs" />
     <Compile Include="Polyglot\PolyglotListsService.cs" />
@@ -54,6 +58,7 @@
     <Compile Include="RepoExtensions\IPolyglotRepositoryExtensions.cs" />
     <Compile Include="Tasks\TaskService.cs" />
     <Compile Include="User\UserServices.cs" />
+    <Compile Include="Viber\ViberService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cshh.Data.Services\cshh.Data.Services.csproj">
@@ -68,6 +73,9 @@
       <Project>{0b4a61d0-1d2f-4d5b-8e71-90d1eaf477b1}</Project>
       <Name>cshh.Model.View</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
