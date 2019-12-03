@@ -128,7 +128,7 @@
       <Project>{acf69d50-0fcc-463c-9290-1ddfb3e45ba5}</Project>
       <Name>cshh.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TaskLib\TaskLib\TaskLib.csproj">
+    <ProjectReference Include="..\..\TaskLib\TaskLib\TaskLib.csproj">
       <Project>{ddeb8eb2-dc92-4a84-876a-42583faeca76}</Project>
       <Name>TaskLib</Name>
     </ProjectReference>

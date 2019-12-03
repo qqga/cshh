@@ -49,11 +49,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IE", "IE", "{9F65D97C-D8DC-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaskLib", "TaskLib", "{4CEC0D19-74AB-4C70-A7D0-0AC261CE1901}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskLib", "TaskLib\TaskLib\TaskLib.csproj", "{DDEB8EB2-DC92-4A84-876A-42583FAECA76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskLib", "..\TaskLib\TaskLib\TaskLib.csproj", "{DDEB8EB2-DC92-4A84-876A-42583FAECA76}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViberBot", "ViberBot", "{51C459D6-DBFF-4E0E-A201-BD0924262D7D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViberBot", "..\..\..\..\Source\Repos\ViberBot\ViberBot\ViberBot.csproj", "{A4EB139B-BBBE-47B6-94A9-9455F5E8FBDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViberBot", "..\ViberBot\ViberBot\ViberBot.csproj", "{A4EB139B-BBBE-47B6-94A9-9455F5E8FBDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

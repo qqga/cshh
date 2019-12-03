@@ -984,7 +984,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Source\Repos\ViberBot\ViberBot\ViberBot.csproj">
+    <ProjectReference Include="..\..\ViberBot\ViberBot\ViberBot.csproj">
       <Project>{a4eb139b-bbbe-47b6-94a9-9455f5e8fbdc}</Project>
       <Name>ViberBot</Name>
     </ProjectReference>
@@ -1000,7 +1000,7 @@
       <Project>{25753865-9c9d-4004-acdf-e808c30e87c2}</Project>
       <Name>cshh.Model.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TaskLib\TaskLib\TaskLib.csproj">
+    <ProjectReference Include="..\..\TaskLib\TaskLib\TaskLib.csproj">
       <Project>{ddeb8eb2-dc92-4a84-876a-42583faeca76}</Project>
       <Name>TaskLib</Name>
     </ProjectReference>

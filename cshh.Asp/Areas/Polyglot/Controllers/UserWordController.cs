@@ -251,7 +251,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
 
         #endregion
 
-        public ActionResult AddWordExt(string word, string userKey, string defaultSetName)
+        public ActionResult AddWordExt(string word, string userKey, string defaultSetName, int? defaultStatusId)
         {
             if(string.IsNullOrWhiteSpace(userKey))
                 throw new Exception("word o userKey not set");
@@ -264,7 +264,8 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
                 WordText = word,
                 Languages = _PolyglotListsService.GetLanguaches().ToSeletListItems(l => l.Name, l => l.Id, 1),
                 Statuses = _PolyglotListsService.GetWordStatuses().ToSeletListItems(s => s.Name, s => s.Id, 1),
-                UrlPost = Request.Url.GetLeftPart(UriPartial.Path)
+                UrlPost = Request.Url.GetLeftPart(UriPartial.Path),
+                Status_Id = defaultStatusId ?? 1
             };
             var existWordInfo = _wordsService.GetWordTranslates(word, userKey);
             if(existWordInfo != null)

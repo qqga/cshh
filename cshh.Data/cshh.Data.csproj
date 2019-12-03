@@ -61,7 +61,7 @@
     <None Include="Polyglot\ClassDiagramPolyglot.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TaskLib\TaskLib\TaskLib.csproj">
+    <ProjectReference Include="..\..\TaskLib\TaskLib\TaskLib.csproj">
       <Project>{ddeb8eb2-dc92-4a84-876a-42583faeca76}</Project>
       <Name>TaskLib</Name>
     </ProjectReference>
