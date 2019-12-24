@@ -410,6 +410,7 @@
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\paint-sky.css" />
     <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
@@ -790,6 +791,7 @@
     <Content Include="Content\themes\vader\jquery-ui.css" />
     <Content Include="Content\themes\vader\jquery-ui.min.css" />
     <Content Include="Content\themes\vader\theme.css" />
+    <Content Include="Scripts\paint-sky.js" />
     <Content Include="Scripts\time-arrow.js" />
     <Content Include="Content\time.css" />
     <Content Include="favicon.ico" />

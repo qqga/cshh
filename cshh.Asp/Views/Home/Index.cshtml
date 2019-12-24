@@ -3,8 +3,9 @@
     //Layout = null;
 }
 
-<div class="jumbotron" style="padding:1rem;">
 
+
+<div class="jumbotron" style="padding:1rem;">
     <div id="clockDisplay" style="">
         <div id="dateDisplay">15.03.2015</div>
         <div id="timeDisplay">10:11:11</div>
@@ -12,23 +13,17 @@
     <div id="arrowTime" style="width:200px; margin:auto;">
 
     </div>
-    @if(User.Identity.IsAuthenticated)
-    {
+</div>
 
-
-        @*<hr />
-            @Html.Action("JqGridEditList", "UserWord", new { area = "polyglot" })*@
-
-    }
-
+<div id="paint-sky-container">
 </div>
 
 @section styles{
     <link href="~/Content/time.css" rel="stylesheet" />
+    <link href="~/Content/paint-sky.css" rel="stylesheet" />
 }
 @section scripts{
     <script src="~/Scripts/time.js"></script>
-
     <script src="~/Scripts/time-arrow.js"></script>
     <script>
         let clock = new ArrowClock(
@@ -37,6 +32,8 @@
             '@Url.Content("~/Content/images/arrowclockface.png")');
         clock.draw();
     </script>
+
+    <script src="~/Scripts/paint-sky.js"></script>
 }
 
 @*@JqGrid.JqGridBundles()*@
