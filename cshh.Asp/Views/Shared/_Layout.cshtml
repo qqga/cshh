@@ -40,7 +40,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+            <ul id="nav-bar" class="navbar-nav mr-auto">
                 @*<li class="nav-item active"> @Html.ActionLink("О программе", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item active">@Html.ActionLink("Контакт", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
                 <li class="nav-item dropdown active">
@@ -122,7 +122,14 @@
             document.cookie = "@themeCookieName=" + src.value + "; expires=" + expireDate+"; path=/";
             document.location = document.location;
         }
-    </script>
+
+        function addNavLink(href, title, clickCallback) {
+            let a = $('<a href="' + href + '" class="nav-link" >' + title + '</a>');
+            a.on('click', clickCallback);
+            var li = a.wrap('<li class="nav-item active"></li>');            
+            $('#nav-bar').append(a.parent());
+        }
+    </script>    
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -1,9 +1,11 @@
-﻿(function () {
+﻿function paintSky(containerId) {
+
+    this.paintStrokes = 20;
+
     var canvasEl = document.createElement('canvas');
     var ctx = canvasEl.getContext("2d");
-    var container = document.getElementById('paint-sky-container');
+    var container = document.getElementById(containerId);//'paint-sky-container'
     container.appendChild(canvasEl);
-
     function fitCanvasToContainer() {
 
         canvasEl.width = window.innerWidth;
@@ -24,21 +26,13 @@
             ball.color = 'rgba(' + rndClr() + ', ' + rndClr() + ', ' + rndClr() + ', 0.1)';
     });
     function rndClr() { return parseInt(Math.random() * 255); }
-    function onDraw(e) {
-
-        requestAnimationFrame(onDraw);
-    }
+    //function onDraw(e) { requestAnimationFrame(onDraw); }
     function ClearCanvas() {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
     }
     var raf = { x: 0, y: 0 };
     var ball = {
-        x: 0,
-        y: 0,
-        vx: 5,
-        vy: 2,
-        radius: 25,
         color: 'rgba(0, 128, 255, 0.1)',
         draw: function () {
             this.x = raf.x || this.x;
@@ -48,7 +42,7 @@
 
             ctx.beginPath();
             //ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < this.paintStrokes; i++) {
                 //ctx.lineTo(getRnd(this.x), getRnd(this.y))
                 ctx.arcTo(getRnd(this.x), getRnd(this.y), getRnd(this.x), getRnd(this.y), 25);
             }
@@ -57,6 +51,7 @@
             ctx.fill();
         }
     };
+    ball.paintStrokes = this.paintStrokes;
 
     function getRnd(x) {
         var size = 20;
@@ -66,6 +61,6 @@
     }
 
     fitCanvasToContainer();
-    requestAnimationFrame(onDraw);
+    //requestAnimationFrame(onDraw);
 
-})();
+}

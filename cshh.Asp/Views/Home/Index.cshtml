@@ -5,16 +5,17 @@
 
 
 
-<div class="jumbotron" style="padding:1rem;">
+<div class="jumbotron collapse show" style="padding:1rem; margin-bottom:0px;" id="collapseExample">
     <div id="clockDisplay" style="">
         <div id="dateDisplay">15.03.2015</div>
         <div id="timeDisplay">10:11:11</div>
     </div>
     <div id="arrowTime" style="width:200px; margin:auto;">
 
-    </div>
+    </div>    
 </div>
-
+<button data-toggle="collapse" class="btn" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" role="button" style="display:block; margin:auto;height:20px; padding:0px 20px; border-radius:0px 0px 10px 10px;"><b>﹀</b></button>
+    
 <div id="paint-sky-container">
 </div>
 
@@ -25,15 +26,26 @@
 @section scripts{
     <script src="~/Scripts/time.js"></script>
     <script src="~/Scripts/time-arrow.js"></script>
+    <script src="~/Scripts/paint-sky.js"></script>
     <script>
         let clock = new ArrowClock(
             'arrowTime',
             180, 20,
             '@Url.Content("~/Content/images/arrowclockface.png")');
         clock.draw();
-    </script>
 
-    <script src="~/Scripts/paint-sky.js"></script>
+        let paintsky = new paintSky('paint-sky-container');
+        addNavLink('#', 'Hide', function () {
+            var cvs = $('#paint-sky-container')[0];
+            document.body.innerHTML = "";
+            document.body.appendChild(cvs);
+            //$('*').css('display','none');
+            //$('#paint-sky-container, #paint-sky-container *, body').css('display', 'block');
+        });
+
+
+
+    </script>
 }
 
 @*@JqGrid.JqGridBundles()*@
@@ -47,5 +59,4 @@
     <script src="http://www.guriddo.net/demo/js/trirand/i18n/grid.locale-en.js"></script>*@
 
 @*@JqGrid.JqGridBundles()
-
     @Html.Action("JqGridEditList", "ForeignText", new { area = "polyglot" })*@

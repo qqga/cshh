@@ -5,16 +5,8 @@
 }
 
 #paint-sky-container {
-    z-index: 10;
+    z-index: -1;
     position: fixed;
     top: 0px;
     left: 0px;    
-}
-
-.container body-content {
-z-index:0;
-}
-
-.navbar {
-z-index:1000;
 }
