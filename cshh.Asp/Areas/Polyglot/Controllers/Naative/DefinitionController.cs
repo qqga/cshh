@@ -24,6 +24,20 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
         }
 
         [AllowAnonymous]
+        public ActionResult Get(int wordId)
+        {
+            try
+            {
+                IEnumerable<WordDefinition> wordDefinitions = _wordDefinitionService.GetWordDefinitions(wordId);
+                return Json(wordDefinitions.Select(_ => new { _.Definition, _.Example }), JsonRequestBehavior.AllowGet);
+            }                        
+            catch(Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
+            }
+        }
+
+        [AllowAnonymous]
         public ActionResult List(int wordId)
         {
             IEnumerable<WordDefinition> wordDefinitions = _wordDefinitionService.GetWordDefinitions(wordId);

@@ -73,12 +73,11 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             return null;
         }
 
-        public string JqGridDelete(int word_id)
+        public string JqGridDelete(int id, int word_id)
         {
             try
             {
-
-
+                _wordDefinitionService.Delete(id);
             }
             catch(Exception ex)
             {

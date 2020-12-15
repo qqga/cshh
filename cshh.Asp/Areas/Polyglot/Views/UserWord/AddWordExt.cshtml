@@ -1,6 +1,7 @@
 ﻿@model AddWordExtViewModel
 @{
     Layout = null;
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
 }
 
 <!DOCTYPE html>
@@ -25,6 +26,7 @@
         #existWordInfo {
             color:mediumvioletred;
             font-weight:bold;
+            max-width:fit-content;
         }
         /*#wait {
             display: none;
@@ -44,9 +46,9 @@
                 <td>@Html.LabelFor(m => m.Sets, "Набор")</td>
                 <td>
                     @Html.TextBoxFor(m => m.SetName, Model.Sets, new { id = "setNameInput" })
-                    <button onclick="document.getElementById('setNameInput').value=''">x</button>
+                    <button id="clearSet">x</button>
                 </td>
-                
+
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.Languages, "Язык")</td>
@@ -56,99 +58,29 @@
                 <td>@Html.LabelFor(m => m.Status_Id, "Статус")</td>
                 <td>@Html.DropDownListFor(m => m.Status_Id, Model.Statuses, new { id = "status_IdInput" })</td>
             </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Example, "Пример")</td>
+                <td>@Html.TextAreaFor(m => m.Example, new { id = "exampleInput" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Languages, "Язык П")</td>
+                <td>@Html.DropDownListFor(m => m.TranslateLanguage_Id, Model.Languages, new { id = "translateLanguage_IdInput" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Translates, "Перевод")</td>
+                <td>@Html.TextAreaFor(m => m.Translates, new { id = "translatesInput" })</td>
+            </tr>
         </table>
 
         <div id="ajaxResInfo"></div>
         <div id="existWordInfo">@Model.ExistWordInfo</div>
-        <button id="submitAddWordAjax" onclick="submitAddWordAjaxClick()">Сохранить</button>
+        <button id="submitAddWordAjax" data-urlPost="@Model.UrlPost" >Сохранить</button>
         <div id="waitCshhAjax">wait...</div>
     </div>
 
     <script>
-
-        document.getElementById("waitCshhAjax").hidden = true;
-
-        function submitAddWordAjaxClick() {
-            beginAddWordAjax();
-
-            let sendData = {
-                WordText: document.getElementById("wordTextInput").value,
-                SetName: document.getElementById("setNameInput").value,
-                WordLanguage_Id: document.getElementById("wordLanguage_IdInput").value,
-                Status_Id: document.getElementById("status_IdInput").value,
-                userKey: document.getElementById("userKeyInput").value
-            };
-
-            let xhr = new XMLHttpRequest();
-
-            xhr.open("POST", "@Model.UrlPost?" + encodeQueryData(sendData), false);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        successAddWordAjax(xhr.responseText);
-                    }
-                    else {                        
-                        failAddWordAjax(xhr.responseText);
-                    }
-                }
-            }
-
-            xhr.onerror = function (e) {
-                failAddWordAjax(JSON.stringify(e));
-            }
-
-            xhr.onloadend = function (e) {
-                completeAddWordAjax();
-            }
-
-            try {
-                xhr.send();
-            }
-            catch (ex) {
-                alert(JSON.stringify(ex));
-                failAddWordAjax("Попробуйте через кнопку на панели.(https?)")
-                completeAddWordAjax();
-            }
-
-        }
-        function failAddWordAjax(err) {
-            log("Error: " + err, true);
-        }
-
-        function beginAddWordAjax() {
-            document.getElementById("submitAddWordAjax").setAttribute("disabled", "disabled");
-            document.getElementById("waitCshhAjax").hidden = false;
-        }
-        function completeAddWordAjax() {
-            document.getElementById("submitAddWordAjax").removeAttribute("disabled");
-            document.getElementById("waitCshhAjax").hidden = true;
-        }
-
-        function successAddWordAjax(data, st, resp) {
-            log(data);
-        }
-
-        function log(message, isErr) {
-            let infoEl = document.getElementById('ajaxResInfo');
-            infoEl.innerText = message;
-            if (isErr) {
-                infoEl.className = "err";
-            }
-            else {
-                infoEl.className = "ok";
-            }
-
-        }
-
-
-        function encodeQueryData(data) {
-            let ret = [];
-            for (let d in data)
-                ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
-            return ret.join('&');
-        }
-
-        document.createElement('d').inn
+        //var urlPost = @Model.UrlPost;
     </script>    
+    <script src="@baseUrl/Scripts/Poly/AddWordExt.js"></script>
 </body>
 </html>

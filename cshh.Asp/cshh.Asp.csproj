@@ -792,6 +792,7 @@
     <Content Include="Content\themes\vader\jquery-ui.min.css" />
     <Content Include="Content\themes\vader\theme.css" />
     <Content Include="Scripts\paint-sky.js" />
+    <Content Include="Scripts\Poly\AddWordExt.js" />
     <Content Include="Scripts\time-arrow.js" />
     <Content Include="Content\time.css" />
     <Content Include="favicon.ico" />

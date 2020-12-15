@@ -57,6 +57,7 @@
                 selectedCount: 0,
                 trainedCount: 0,
                 currentWord: {},
+                examplesCache: {},
             },
             methods: {
                 dropStatistic: function () {
@@ -65,8 +66,9 @@
                     this.selectedCount = 0;
                     this.currentWord = {};
                     this.selectedCount = 0;
+                    this.examplesCache = {};
                 },
-                getWord: function () {
+                getWord: async function () {
                     let statisticObj = this.statisticObj;//for capture
 
                     var selectedRows = JqGridExt.GetSelectedRows("#jqGridUserWords");
@@ -104,8 +106,33 @@
                     let trainedCountTotal = Object.keys(this.statisticObj).map(function (key) { return statisticObj[key].count }).reduce(function (prev, curr) { return prev += curr });
                     console.log("total: " + trainedCountTotal + " currentCount: " + this.currentCount + " selectedCount " + this.selectedCount )
                     this.trainedCount = trainedCountTotal > this.selectedCount ? (trainedCountTotal % this.selectedCount) || this.selectedCount : trainedCountTotal;
+
+                    resultWord.examples = await this.getExamples(resultWord.Word_Id);
+
                     return resultWord;
+                },
+
+                getExamples: async function (wordId) {
+                    if (this.examplesCache[wordId])
+                    {
+                        return this.examplesCache[wordId];
+                    }
+                    var res = null;
+                    try {
+                        resp = await fetch("Definition/Get?wordId=" + wordId);
+                        if (!resp.ok)
+                            throw await resp.text();
+                        res = this.examplesCache[wordId] = await resp.json();
+
+                    }
+                    catch (e) {
+                        console.log(e);
+                        //debugger;                        
+                    }
+
+                    return res;
                 }
+
             },
             computed: {
                 currentCount: function () {

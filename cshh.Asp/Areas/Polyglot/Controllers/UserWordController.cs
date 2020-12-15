@@ -265,7 +265,8 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
                 Languages = _PolyglotListsService.GetLanguaches().ToSeletListItems(l => l.Name, l => l.Id, 1),
                 Statuses = _PolyglotListsService.GetWordStatuses().ToSeletListItems(s => s.Name, s => s.Id, 1),
                 UrlPost = Request.Url.GetLeftPart(UriPartial.Path),
-                Status_Id = defaultStatusId ?? 1
+                Status_Id = defaultStatusId ?? 1,
+                TranslateLanguage_Id = 2//todo magic to extension params
             };
             var existWordInfo = _wordsService.GetWordTranslates(word, userKey);
             if(existWordInfo != null)
@@ -285,8 +286,7 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             {
                 UserWord userWord = _mapper.Map<UserWord>(userWordVM);
 
-                //throw new Exception("sdfg");
-                _wordsService.Add(userWord, userWordVM.UserKey);
+                _wordsService.Add(userWord, userWordVM.Example, userWordVM.TranslateLanguage_Id, userWordVM.Translates, userWordVM.UserKey);
             }
             catch(Exception ex)
             {

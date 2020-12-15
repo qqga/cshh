@@ -119,6 +119,8 @@
                 mtype: "GET",
 				//styleUI : "Bootstrap",
                 datatype: "json",
+                sortorder: "desc",
+                sortname: "DateTimeCreate",
                 colModel: [
                     { label: "Id", name: "Id", hidden: true, editable: true, key: true, searchtype: 'integer', width:50, editoptions: { disabled: "disabled" } },
                     { label: "Word_Id", name: "Word_Id", hidden: true, editable: true, editoptions: { type: "hidden" } },
@@ -138,7 +140,7 @@
                     { label: "Тип", name: "WordType_Id", hidden: true, editable: true, edittype: "select", editoptions: { value: "@jgEditLists.WordTypesStr", disabled: "disabled", class: "addOnlyEnabled" } },
                     { label: "Тип", name: "WordTypeName", index: "Word.WordType.Name", width: 70},
 
-                    { label: "Создан", name: "DateTimeCreate", sorttype: 'date' ,searchoptions: { dataInit: datePick, title: 'Select Date' },  },
+                    { label: "Создан", name: "DateTimeCreate", sorttype: 'date', firstsortorder: "desc" ,searchoptions: { dataInit: datePick, title: 'Select Date' },  },
                     { label: "tr", name: "Translations" },
                 ],
                 rowList: [25, 50, 75, 100, 500, 1000, 5000, 10000, 50000, 100000],

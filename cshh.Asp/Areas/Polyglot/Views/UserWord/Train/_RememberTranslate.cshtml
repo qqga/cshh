@@ -10,7 +10,7 @@
             <h5>Перевод</h5>
             <div>{{translate}}</div>
             <h5>Примеры</h5>
-            <div>todo</div>
+            <div>{{examples}}</div>
         </div>
 
     </div>
@@ -28,9 +28,10 @@
                 isVisibleTranslate: false
             },
             methods: {
-                next: function () {
-                    this.isVisibleTranslate = false;                    
-                    this.current = wordSelectorVue.getWord();
+                next: async function () {
+                    this.isVisibleTranslate = false;
+                    this.current = await wordSelectorVue.getWord();
+
                 }
             },
             computed: {
@@ -39,6 +40,16 @@
                 },
                 translate: function () {
                     return this.current ? this.current.Translations || "нет перевода" : "";
+                },
+                examples: function () {
+                  
+                    if (!this.current || !this.current.examples || this.current.examples.length == 0)
+                        return "";
+
+                    var join = this.current.examples.reduce((acc, cur) => acc + (cur.Definition ? cur.Definition + ": " : "") + cur.Example + "; ","");
+
+                    return join;
+                    //return this.current ? this.current.Translations || "нет перевода" : "";
                 }
             }
         });

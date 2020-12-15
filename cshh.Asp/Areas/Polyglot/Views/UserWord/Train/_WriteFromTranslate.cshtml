@@ -4,6 +4,7 @@
 
     <div v-show="current">
         <div v-bind:title="word">Перевод: <b>{{translations}}</b></div>
+        <div>Примеры <input type="checkbox" v-model="showExamples"/>: <b v-show="showExamples">{{examples}}</b></div>
         <div v-show="!isCorrect" class="text-error">Неверно</div>
         <div v-show="isCorrect" class="text-positive">Верно</div>
         <input type="text" v-model="entered" v-on:keyup.enter="next" />
@@ -28,16 +29,17 @@
 
             el: "#train-write-from-translate-vue",
             methods: {
-                next: function () {
+                next: async function () {
                     this.entered = "";
-                    this.current = wordSelectorVue.getWord();
+                    this.current = await wordSelectorVue.getWord();
                     if (this.current && !this.current.Translations)
                         this.current.Translations = this.current.WordText + " - нет перевода.";
                 }
             },
             data: {
                 current: null,
-                entered: ""
+                entered: "",
+                showExamples:true,
             },
             computed: {
                 isCorrect: function () {
@@ -48,6 +50,19 @@
                 },
                 word: function () {
                     return this.current ? this.current.WordText : null;
+                },
+                examples: function () {
+                    if (!this.current || !this.current.examples || this.current.examples.length == 0) {
+                        return "";
+                    }
+
+                    var join = this.current.examples.reduce((acc, cur) => acc + (cur.Definition ? cur.Definition + ": " : "") + cur.Example + "; ", "");
+                    var word = this.word;
+                    if (word) {
+                        join = join.replaceAll(word, ".....");
+                        join = join.replaceAll(word.charAt(0).toUpperCase() + word.slice(1), ".....");
+                    }
+                    return join;
                 }
             }
 

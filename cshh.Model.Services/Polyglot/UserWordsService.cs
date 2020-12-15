@@ -19,6 +19,7 @@ namespace cshh.Model.Services.Polyglot
         IQueryable<UserWord> GetUserWords();
         UserWord Add(UserWord userWord);
         UserWord Add(UserWord word, string userKey);
+        UserWord Add(UserWord word, string example, int translateLanguage_Id, string translates, string userKey);
         void Delete(int id);
         void Edit(UserWord userWord);
         string GetWordTranslates(string word, string appUserId);
@@ -88,7 +89,42 @@ namespace cshh.Model.Services.Polyglot
             return newUserWord;
 
         }
+        public UserWord Add(UserWord userWord, string example, int translateLanguage_Id, string translates, string userAppId)
+        {
+            UserProfile user = Repository.GetUserProfile(userAppId);
+            var newUserWord = Add(userWord, userAppId);
 
+            if(!string.IsNullOrEmpty(example))
+            {
+                WordDefinition wordDefinition = new WordDefinition() { Word_Id = newUserWord.Word_Id, Example = example, Public = true, UserProfile_Id = user.Id };
+                Repository.Add(wordDefinition, true);
+            }
+            if(!string.IsNullOrWhiteSpace(translates))
+            {
+                var translatesArr = translates.Split(',').Select(_=>_.Trim().ToLower()).Select(_=>new Word() { Language_Id = translateLanguage_Id, Text = _ });
+                var newWord = Repository.GetByKey<Word>(newUserWord.Word_Id);
+
+                foreach(var newWordTranslate in translatesArr)
+                {
+                    var wordRes = Repository.Words.FindSameWordOrDefault(newWordTranslate, out bool isfound);
+                    if(!isfound)
+                    {
+                        wordRes.UserProfile_Id = user.Id;
+                        wordRes.Text = newWordTranslate.Text.ToLower();
+                        wordRes.Language_Id = newWordTranslate.Language_Id;
+                        wordRes.Type_Id = newWordTranslate.Type_Id;
+                        wordRes.DateTimeCreate = DateTime.Now;
+                    }
+
+                    newWord.TranslationsTo.Add(wordRes);
+
+                    Repository.Update(newWord);
+                }
+                Repository.Save();
+            }
+
+            return newUserWord;
+        }
 
         public void Add(IEnumerable<string> words, string setName, int lang_id, int status_id)//todo textid unsaved
         {
@@ -222,7 +258,7 @@ namespace cshh.Model.Services.Polyglot
                 Repository.Update(word);
             }
 
-            Repository.Save();            
+            Repository.Save();
         }
     }
 }
