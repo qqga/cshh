@@ -94,7 +94,7 @@ namespace cshh.Model.Services.Polyglot
             UserProfile user = Repository.GetUserProfile(userAppId);
             var newUserWord = Add(userWord, userAppId);
 
-            if(!string.IsNullOrEmpty(example))
+            if(!string.IsNullOrWhiteSpace(example))
             {
                 WordDefinition wordDefinition = new WordDefinition() { Word_Id = newUserWord.Word_Id, Example = example, Public = true, UserProfile_Id = user.Id };
                 Repository.Add(wordDefinition, true);
@@ -102,7 +102,7 @@ namespace cshh.Model.Services.Polyglot
             if(!string.IsNullOrWhiteSpace(translates))
             {
                 var translatesArr = translates.Split(',').Select(_=>_.Trim().ToLower()).Select(_=>new Word() { Language_Id = translateLanguage_Id, Text = _ });
-                var newWord = Repository.GetByKey<Word>(newUserWord.Word_Id);
+                var newWord = Repository.GetByKey<Word>(newUserWord.Word_Id, _=>_.TranslationsTo);
 
                 foreach(var newWordTranslate in translatesArr)
                 {
@@ -110,7 +110,7 @@ namespace cshh.Model.Services.Polyglot
                     if(!isfound)
                     {
                         wordRes.UserProfile_Id = user.Id;
-                        wordRes.Text = newWordTranslate.Text.ToLower();
+                        wordRes.Text = newWordTranslate.Text?.ToLower();
                         wordRes.Language_Id = newWordTranslate.Language_Id;
                         wordRes.Type_Id = newWordTranslate.Type_Id;
                         wordRes.DateTimeCreate = DateTime.Now;

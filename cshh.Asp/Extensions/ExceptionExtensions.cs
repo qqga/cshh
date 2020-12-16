@@ -15,7 +15,7 @@ namespace cshh.Asp.Extensions
              {
                  messages.Add(ex.Message);
 
-                 if(e is System.Data.Entity.Validation.DbEntityValidationException eValidEx)
+                 if(ex is System.Data.Entity.Validation.DbEntityValidationException eValidEx)
                  {
                      foreach(System.Data.Entity.Validation.DbEntityValidationResult dbEntityValidationResult in eValidEx.EntityValidationErrors)
                      {

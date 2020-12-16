@@ -63,7 +63,7 @@
                 <td>@Html.TextAreaFor(m => m.Example, new { id = "exampleInput" })</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(m => m.Languages, "Язык П")</td>
+                <td title="Язык Перевода">@Html.LabelFor(m => m.Languages, "Язык П")</td>
                 <td>@Html.DropDownListFor(m => m.TranslateLanguage_Id, Model.Languages, new { id = "translateLanguage_IdInput" })</td>
             </tr>
             <tr>

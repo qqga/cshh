@@ -284,16 +284,19 @@ namespace cshh.Asp.Areas.Polyglot.Controllers
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
             try
             {
+                //throw new Exception("errr",new Exception("inner er"));
                 UserWord userWord = _mapper.Map<UserWord>(userWordVM);
 
                 _wordsService.Add(userWord, userWordVM.Example, userWordVM.TranslateLanguage_Id, userWordVM.Translates, userWordVM.UserKey);
+                
             }
             catch(Exception ex)
             {
                 //return Json(ex.CollectMessages());
                 //return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.CollectMessages());
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(ex.CollectMessages());
+                //Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                //return Json(ex.CollectMessages());
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.ToString());
             }
             return Json("Ok");
         }
