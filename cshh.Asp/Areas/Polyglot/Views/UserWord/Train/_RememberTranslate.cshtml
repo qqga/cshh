@@ -16,7 +16,11 @@
     </div>
 </div>
 
-
+@*<style>
+    #train-remember-translate-translates, #train-remember-translate-translates *, #train-remember-translate-translates *::before, #train-remember-translate-translates *::after {
+        box-sizing: padding-box;
+    }
+</style>*@
 
 <script>
     $(function () {
@@ -54,6 +58,7 @@
             }
         });
         $("#train-remember-translate-translates").accordion({ collapsible: true, active: false });
+        $("#train-remember-translate-translates div").css("height", "");//bootstrap box-sizing + jqueryui accordion issue
     });
 
 </script>
