@@ -56,6 +56,7 @@
     <Compile Include="Polyglot\WordsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepoExtensions\IPolyglotRepositoryExtensions.cs" />
+    <Compile Include="Sport\WorkoutService.cs" />
     <Compile Include="Tasks\TaskService.cs" />
     <Compile Include="User\UserServices.cs" />
     <Compile Include="Viber\ViberService.cs" />
@@ -77,5 +78,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

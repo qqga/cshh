@@ -3,6 +3,7 @@ using cshh.Data.Polyglot;
 using cshh.Data.Services.DbContexts;
 using cshh.Data.Services.Repo;
 using cshh.Model.Services.Polyglot;
+using cshh.Model.Services.Sport;
 using cshh.Model.Services.Tasks;
 using cshh.Model.Services.User;
 using cshh.Model.Services.Viber;
@@ -60,6 +61,7 @@ namespace cshh.Asp
             container.RegisterType<IPolyglotRepository, PolyglotEfRepository>();
             container.RegisterType<ITaskRepository, TaskEfRepository>();
             container.RegisterType<IViberRepository, ViberEfRepository>();
+            container.RegisterType<ISportRepository, SportEfRepository>();
 
             container.RegisterType<PolyglotDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
                 new InjectionFactory(c => new PolyglotDbContext("cshhConnection")));
@@ -70,6 +72,9 @@ namespace cshh.Asp
 
             container.RegisterType<ViberDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
                 new InjectionFactory(c => new ViberDbContext("cshhConnection")));
+
+            container.RegisterType<SportDbContext>(new Unity.Lifetime.PerResolveLifetimeManager(),
+                new InjectionFactory(c => new SportDbContext("cshhConnection")));
 
             #endregion
 
@@ -86,6 +91,8 @@ namespace cshh.Asp
             container.RegisterType<ViberBot.ViberBotClient>(new InjectionFactory(s => new ViberBot.ViberBotClient(appSettingsEncryptedSection["ViberToken"])));                
             container.RegisterType<IViberBot, Models.Viber.ViberBotAdapter>();
             container.RegisterType<IViberService, ViberService>();
+                        
+            container.RegisterType<IWorkoutService, WorkoutService>();
 
             #endregion
 

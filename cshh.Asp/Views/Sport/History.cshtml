@@ -1,0 +1,45 @@
+﻿@model IEnumerable<cshh.Data.Sport.Set>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>History</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+            table td, table th {
+                border: 1px solid black;
+            }
+
+            table td {
+                text-align: center;
+            }
+    </style>
+</head>
+<body>
+    <h4>История @Html.ActionLink("тренировок", "Set", new { UserId = Request.QueryString.Get("userId") }) </h4>
+    <div>
+        <table>
+            <tr><th>№</th><th>Дата</th><th>Кол-во.</th></tr>
+            @for(int i = 1; i <= Model.Count(); i++)
+            {
+                var row = Model.ElementAt(i - 1);
+                <tr>
+                    <td>@i</td>
+                    <td>@row.Dt.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@row.Reps</td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</body>
+</html>

@@ -291,6 +291,7 @@
     <Compile Include="Controllers\Base\BaseCshhController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SportController.cs" />
     <Compile Include="Controllers\ViberController.cs" />
     <Compile Include="Extensions\Controller\ModelStateExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
@@ -975,6 +976,8 @@
     <Content Include="Scripts\webpack.config.js" />
     <Content Include="Views\Viber\Events.cshtml" />
     <Content Include="Views\Viber\SendMsgForm.cshtml" />
+    <Content Include="Views\Sport\Set.cshtml" />
+    <Content Include="Views\Sport\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

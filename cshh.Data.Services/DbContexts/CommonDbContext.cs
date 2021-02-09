@@ -24,8 +24,7 @@ namespace cshh.Data.Services.DbContexts
         }
 
         public CommonDbContext(string connectionString) : base(connectionString)
-        {
-
+        {            
         }
         /// <summary>
         /// Constructs a new context instance using conventions to create the name of the database to
@@ -48,6 +47,7 @@ namespace cshh.Data.Services.DbContexts
             PolyglotDbContext.MapConfiguration(modelBuilder);
             TaskDbContext.MapConfiguration(modelBuilder);
             ViberDbContext.MapConfiguration(modelBuilder);
+            SportDbContext.MapConfiguration(modelBuilder);
         }
         public override int SaveChanges()
         {
@@ -81,6 +81,10 @@ namespace cshh.Data.Services.DbContexts
         public DbSet<cshh.Data.Viber.ViberEvent> ViberEvents { get; set; }
         public DbSet<cshh.Data.Viber.ViberUser> ViberUsers { get; set; }
 
+        #endregion
+
+        #region Sport
+        public DbSet<cshh.Data.Sport.Set> WorkoutSets { get; set; }
         #endregion
 
     }

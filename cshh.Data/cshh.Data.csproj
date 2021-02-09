@@ -52,6 +52,7 @@
     <Compile Include="Polyglot\WordStatus.cs" />
     <Compile Include="Polyglot\WordType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sport\Set.cs" />
     <Compile Include="Tasks\Task.cs" />
     <Compile Include="User\UserProfile.cs" />
     <Compile Include="Viber\ViberEvent.cs" />

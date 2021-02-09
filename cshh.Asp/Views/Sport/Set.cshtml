@@ -1,0 +1,73 @@
+﻿@model cshh.Asp.Models.WorkoutSetViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <style>
+        body {
+            font-size: 30px;
+            background-color: pink;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+            table td, table th {
+                border: 1px solid black;
+            }
+
+            table td {
+                text-align: center;
+            }
+
+        input[type='number'] {
+            max-width: 100px;
+            font-size: 30px;
+        }
+
+
+        #input-set {
+            display: flex;
+            align-items: stretch;
+        }
+
+        #input-set-btn {
+            width: 70px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <section id="total">
+            <table>
+                <tr><th>Период</th><td>@Model.UserTotalResult.Period.Days д. @Model.UserTotalResult.Period.Hours ч.</td></tr>
+                <tr><th>@Html.ActionLink("Тренировок", "History", new { Model.UserId })</th><td>@Model.UserTotalResult.Sets</td></tr>
+                <tr><th>Повторений</th><td>@Model.UserTotalResult.Reps</td></tr>
+                <tr><th>Уничтожено</th><td>@Model.UserTotalResult.BurnedFat.ToString("0.0") г.</td></tr>
+            </table>
+        </section>
+        <hr />
+        <section>
+            @using(Html.BeginForm())
+            {
+                @Html.HiddenFor(_ => _.UserId)
+
+                <div id="input-set">
+                    @Html.EditorFor(_ => _.Reps)
+                    <button id="input-set-btn" type="submit">+</button>
+                </div>
+            }
+
+        </section>
+    </div>
+</body>
+</html>

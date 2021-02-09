@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace cshh.Data.Services.Mapping.Task
 {
+    #region RegionName
     class TaskMap : BaseEntityTypeConfiguration<cshh.Data.Tasks.Task>
     {
 
@@ -29,4 +30,5 @@ namespace cshh.Data.Services.Mapping.Task
             //HasMany(t => t.SubTasks as ICollection<Data.Task.Task>).WithOptional(t => t.SupTask as Data.Task.Task).HasForeignKey(t => t.SupTaskId);
         }
     }
+    #endregion
 }
