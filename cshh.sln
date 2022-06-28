@@ -21,10 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BrowserExt", "BrowserExt", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chrome", "Chrome", "{0310B336-772E-47DA-8FD9-CE975639440A}"
 	ProjectSection(SolutionItems) = preProject
+		BrowserExt\Chrome\AddWordExt.js = BrowserExt\Chrome\AddWordExt.js
+		BrowserExt\Chrome\background.js = BrowserExt\Chrome\background.js
 		BrowserExt\Chrome\common.js = BrowserExt\Chrome\common.js
 		BrowserExt\Chrome\content.css = BrowserExt\Chrome\content.css
 		BrowserExt\Chrome\content.js = BrowserExt\Chrome\content.js
-		BrowserExt\Chrome\context.js = BrowserExt\Chrome\context.js
 		BrowserExt\Chrome\manifest.json = BrowserExt\Chrome\manifest.json
 		BrowserExt\Chrome\Options.html = BrowserExt\Chrome\Options.html
 		BrowserExt\Chrome\options.js = BrowserExt\Chrome\options.js

@@ -1,5 +1,11 @@
-﻿
-var mouseEvent = { pageX: 0, pageY: 0 };
+﻿var mouseEvent = { pageX: 0, pageY: 0 };
+let commonJs;
+//import { nodeScriptReplace } from '/common.js'
+(async () => {
+    const src = chrome.runtime.getURL("/common.js");
+    commonJs = await import(src);    
+})();
+
 
 document.addEventListener('mouseup', function (e) {
     if (e.button == 2) {
@@ -10,16 +16,20 @@ document.addEventListener('mouseup', function (e) {
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.action == "showHtmlText") {
-            //sendResponse({ pageX: mouseEvent.pageX, pageY: mouseEvent.pageY });
+            //sendResponse({ pageX: mouseEvent.pageX, pageY: mouseEvent.pageY });            
             injectHtmlToDocument(request.htmlText, mouseEvent);
         }
     })
 
+//function injectHtmlToDocument2(mouseEvent) {    
+//    let ref = chrome.runtime.getURL("popup.html")
+//    fetch(ref).then(resp => resp.text().then(html => injectHtmlToDocument(html, mouseEvent)));
+//}
 
 
 ///------------inject--------------
 function injectHtmlToDocument(htmlText, mouseEvent) {
-    console.trace("injectHtmlToDocument");
+
     let el = document.createElement('div');
     el.innerHTML = htmlText;
     injectElToDocument(el, mouseEvent);
@@ -41,7 +51,7 @@ function injectElToDocument(el, mouseEvent) {
     }
 
     document.body.appendChild(container);
-    nodeScriptReplace(container);
+    commonJs.nodeScriptReplace(container);
 }
 
 function makeClosable(el) {
@@ -59,33 +69,4 @@ function makeClosable(el) {
 }
 
 //===========inject=================
-
-///------------run scripts--------
-//when inject received by ajax html text, we need to exec contained scrips
-function nodeScriptReplace(node) {
-    if (nodeScriptIs(node) === true) {
-        node.parentNode.replaceChild(nodeScriptClone(node), node);
-    }
-    else {
-        var i = 0;
-        var children = node.childNodes;
-        while (i < children.length) {
-            nodeScriptReplace(children[i++]);
-        }
-    }
-
-    return node;
-}
-function nodeScriptIs(node) {
-    return node.tagName === 'SCRIPT';
-}
-function nodeScriptClone(node) {
-    var script = document.createElement("script");
-    script.text = node.innerHTML;
-    for (var i = node.attributes.length - 1; i >= 0; i--) {
-        script.setAttribute(node.attributes[i].name, node.attributes[i].value);
-    }
-    return script;
-}
-///===========run scripts=============
 

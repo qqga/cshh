@@ -1,28 +1,40 @@
 
-const encodeQueryData = chrome.extension.getBackgroundPage().encodeQueryData;
-const getOptions = chrome.extension.getBackgroundPage().getOptions;
+import { messageBox, getCshhPage, nodeScriptReplace } from '/common.js'
 
-chrome.tabs.executeScript({
-    code: "window.getSelection().toString();"
-}, function (selection) {
+chrome.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+    let result;
+    try {
+        chrome.scripting.executeScript({
+            target: { tabId: tabs[0].id },
+            function: () => getSelection().toString(),
+        }).then(selection => showFrameCshh(selection[0].result));
 
-    let selectedText = selection ? selection[0].trim() : "";
-
-    showFrameCshh(selectedText);
-
+    } catch (e) {
+        messageBox(e); // ignoring an unsupported page like chrome://extensions
+    }
 });
 
 function showFrameCshh(selectedText) {
-    
-    getOptions(function (opt) {
-        let frame = createFrameCshh(selectedText, opt.userKeyOpt, opt.urlOpt, opt.defaultSetNameOpt);       
-        document.body.appendChild(frame);
-    });
+
+    getCshhPage(selectedText, createEl);
+
+    //getOptions(function (opt) {
+    //    let frame = createFrameCshh(selectedText, opt.userKeyOpt, opt.urlOpt, opt.defaultSetNameOpt);
+    //    document.body.appendChild(frame);
+    //});
 }
 
-function createFrameCshh(selectedText, userKey, cshhUrl, defaultSetName) {
-    var frame = document.createElement('iframe');
-    frame.setAttribute('id', 'cshhframe');
-    frame.setAttribute('src', cshhUrl + '?' + encodeQueryData({ word: selectedText, userKey, defaultSetName }));
-    return frame;
+
+function createEl(htmlText) {
+    let el = document.createElement('div');
+    el.innerHTML = htmlText;    
+    document.body.appendChild(el);
+    nodeScriptReplace(el);
 }
+
+//function createFrameCshh(selectedText, userKey, cshhUrl, defaultSetName) {
+//    var frame = document.createElement('iframe');
+//    frame.setAttribute('id', 'cshhframe');
+//    frame.setAttribute('src', cshhUrl + '?' + encodeQueryData({ word: selectedText, userKey, defaultSetName }));    
+//    return frame;
+//}
